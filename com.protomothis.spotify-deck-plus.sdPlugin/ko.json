@@ -1,0 +1,95 @@
+{
+	"Name": "Spotify Deck+",
+	"Description": "Stream Deck + 를 위한 Spotify 컨트롤: 재생 키, 볼륨 다이얼, 폴더처럼 탐색하는 라이브러리 브라우저.",
+	"com.protomothis.spotify-deck-plus.play-pause": {
+		"Name": "재생 / 일시정지",
+		"Tooltip": "앨범 아트 위에 재생 상태를 표시하고, 눌러서 재생/일시정지합니다."
+	},
+	"com.protomothis.spotify-deck-plus.previous": {
+		"Name": "이전 곡",
+		"Tooltip": "이전 곡으로 이동합니다."
+	},
+	"com.protomothis.spotify-deck-plus.next": {
+		"Name": "다음 곡",
+		"Tooltip": "다음 곡으로 이동합니다."
+	},
+	"com.protomothis.spotify-deck-plus.like": {
+		"Name": "좋아요",
+		"Tooltip": "현재 곡을 좋아요 표시한 곡에 추가/제거합니다."
+	},
+	"com.protomothis.spotify-deck-plus.shuffle": {
+		"Name": "셔플",
+		"Tooltip": "셔플을 켜고 끕니다."
+	},
+	"com.protomothis.spotify-deck-plus.repeat": {
+		"Name": "반복",
+		"Tooltip": "반복 끔 → 전체 반복 → 한 곡 반복 순으로 전환합니다."
+	},
+	"com.protomothis.spotify-deck-plus.add-to-playlist": {
+		"Name": "재생목록에 추가",
+		"Tooltip": "현재 곡을 키 설정에서 고른 재생목록에 추가합니다."
+	},
+	"com.protomothis.spotify-deck-plus.device": {
+		"Name": "재생 기기 전환",
+		"Tooltip": "누를 때마다 다음 Spotify 기기로 재생을 옮깁니다."
+	},
+	"com.protomothis.spotify-deck-plus.setup": {
+		"Name": "설정",
+		"Tooltip": "브라우저에서 Spotify Deck+ 설정 페이지(로그인·상태)를 엽니다."
+	},
+	"com.protomothis.spotify-deck-plus.playback-dial": {
+		"Name": "재생 제어",
+		"Tooltip": "현재 곡 정보와 진행률을 표시합니다.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "5초씩 탐색",
+				"Push": "재생 / 일시정지",
+				"Touch": "탭: 다음 곡, 길게: 이전 곡"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.volume-dial": {
+		"Name": "볼륨",
+		"Tooltip": "Spotify 재생 기기의 볼륨을 조절합니다.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "볼륨 ±2%",
+				"Push": "음소거 / 해제",
+				"Touch": "음소거 / 해제"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.browse": {
+		"Name": "라이브러리 탐색",
+		"Tooltip": "지금 재생 중·대기열·재생목록·좋아요·아티스트·앨범·최근 재생을 폴더처럼 들어가며 탐색하고 재생합니다.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "목록 스크롤",
+				"Push": "폴더 열기 / 재생",
+				"Touch": "탭: 뒤로, 길게: 지금 재생 중으로"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.playlists-dial": {
+		"Name": "내 재생목록",
+		"Tooltip": "내 재생목록을 넘겨보고 눌러서 재생합니다.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "재생목록 스크롤",
+				"Push": "선택한 재생목록 재생",
+				"Touch": "탭: 재생 중인 목록으로, 길게: 새로고침"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.liked-dial": {
+		"Name": "좋아요 표시한 곡",
+		"Tooltip": "좋아요 표시한 곡을 넘겨보고 눌러서 재생합니다.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "곡 목록 스크롤",
+				"Push": "선택한 곡 재생",
+				"Touch": "탭: 재생 중인 곡으로, 길게: 새로고침"
+			}
+		}
+	}
+}

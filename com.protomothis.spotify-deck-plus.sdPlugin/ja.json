@@ -1,0 +1,95 @@
+{
+	"Name": "Spotify Deck+",
+	"Description": "Stream Deck + 向け Spotify コントロール: 再生キー、音量ダイヤル、フォルダ形式のライブラリブラウザ。",
+	"com.protomothis.spotify-deck-plus.play-pause": {
+		"Name": "再生 / 一時停止",
+		"Tooltip": "アルバムアートの上に再生状態を表示し、押すと再生/一時停止します。"
+	},
+	"com.protomothis.spotify-deck-plus.previous": {
+		"Name": "前の曲",
+		"Tooltip": "前の曲に戻ります。"
+	},
+	"com.protomothis.spotify-deck-plus.next": {
+		"Name": "次の曲",
+		"Tooltip": "次の曲にスキップします。"
+	},
+	"com.protomothis.spotify-deck-plus.like": {
+		"Name": "お気に入り",
+		"Tooltip": "再生中の曲をお気に入りに追加/削除します。"
+	},
+	"com.protomothis.spotify-deck-plus.shuffle": {
+		"Name": "シャッフル",
+		"Tooltip": "シャッフルのオン/オフを切り替えます。"
+	},
+	"com.protomothis.spotify-deck-plus.repeat": {
+		"Name": "リピート",
+		"Tooltip": "リピート オフ → 全曲リピート → 1曲リピート の順に切り替えます。"
+	},
+	"com.protomothis.spotify-deck-plus.add-to-playlist": {
+		"Name": "プレイリストに追加",
+		"Tooltip": "再生中の曲を、キー設定で選んだプレイリストに追加します。"
+	},
+	"com.protomothis.spotify-deck-plus.device": {
+		"Name": "デバイス切替",
+		"Tooltip": "押すたびに次の Spotify Connect デバイスへ再生を移します。"
+	},
+	"com.protomothis.spotify-deck-plus.setup": {
+		"Name": "設定",
+		"Tooltip": "ブラウザで Spotify Deck+ の設定ページ (ログイン・状態) を開きます。"
+	},
+	"com.protomothis.spotify-deck-plus.playback-dial": {
+		"Name": "再生コントロール",
+		"Tooltip": "再生中の曲と進行状況を表示します。",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "5秒シーク",
+				"Push": "再生 / 一時停止",
+				"Touch": "タップ: 次の曲、長押し: 前の曲"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.volume-dial": {
+		"Name": "音量",
+		"Tooltip": "アクティブな Spotify デバイスの音量を調整します。",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "音量 ±2%",
+				"Push": "ミュート / 解除",
+				"Touch": "ミュート / 解除"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.browse": {
+		"Name": "ライブラリブラウザ",
+		"Tooltip": "再生中・キュー・プレイリスト・お気に入り・アーティスト・アルバム・履歴をフォルダのようにたどって再生します。",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "スクロール",
+				"Push": "開く / 再生",
+				"Touch": "タップ: 戻る、長押し: 再生中へ"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.playlists-dial": {
+		"Name": "マイプレイリスト",
+		"Tooltip": "プレイリストをめくって、押すと再生します。",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "プレイリストをスクロール",
+				"Push": "選択したプレイリストを再生",
+				"Touch": "タップ: 再生中のリスト、長押し: 更新"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.liked-dial": {
+		"Name": "お気に入りの曲",
+		"Tooltip": "お気に入りの曲をめくって、押すと再生します。",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "曲をスクロール",
+				"Push": "選択した曲を再生",
+				"Touch": "タップ: 再生中の曲、長押し: 更新"
+			}
+		}
+	}
+}

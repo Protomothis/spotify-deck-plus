@@ -1,0 +1,95 @@
+{
+	"Name": "Spotify Deck+",
+	"Description": "Spotify controls for Stream Deck +: playback keys, a volume dial and a folder-style library browser.",
+	"com.protomothis.spotify-deck-plus.play-pause": {
+		"Name": "Play / Pause",
+		"Tooltip": "Shows the playback state over the album art; press to play or pause."
+	},
+	"com.protomothis.spotify-deck-plus.previous": {
+		"Name": "Previous",
+		"Tooltip": "Skips to the previous track."
+	},
+	"com.protomothis.spotify-deck-plus.next": {
+		"Name": "Next",
+		"Tooltip": "Skips to the next track."
+	},
+	"com.protomothis.spotify-deck-plus.like": {
+		"Name": "Like",
+		"Tooltip": "Adds or removes the current track from Liked Songs."
+	},
+	"com.protomothis.spotify-deck-plus.shuffle": {
+		"Name": "Shuffle",
+		"Tooltip": "Turns shuffle on or off."
+	},
+	"com.protomothis.spotify-deck-plus.repeat": {
+		"Name": "Repeat",
+		"Tooltip": "Cycles repeat off → repeat all → repeat one."
+	},
+	"com.protomothis.spotify-deck-plus.add-to-playlist": {
+		"Name": "Add to Playlist",
+		"Tooltip": "Adds the current track to the playlist chosen in the key settings."
+	},
+	"com.protomothis.spotify-deck-plus.device": {
+		"Name": "Switch Device",
+		"Tooltip": "Moves playback to the next Spotify Connect device on each press."
+	},
+	"com.protomothis.spotify-deck-plus.setup": {
+		"Name": "Settings",
+		"Tooltip": "Opens the Spotify Deck+ settings page (login and status) in your browser."
+	},
+	"com.protomothis.spotify-deck-plus.playback-dial": {
+		"Name": "Playback",
+		"Tooltip": "Shows the current track and progress.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "Seek 5 s",
+				"Push": "Play / Pause",
+				"Touch": "Tap: next, hold: previous"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.volume-dial": {
+		"Name": "Volume",
+		"Tooltip": "Adjusts the volume of the active Spotify device.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "Volume ±2%",
+				"Push": "Mute / Unmute",
+				"Touch": "Mute / Unmute"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.browse": {
+		"Name": "Library Browser",
+		"Tooltip": "Browse Now Playing, queue, playlists, liked songs, artists, albums and history like folders, and play from them.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "Scroll",
+				"Push": "Open / Play",
+				"Touch": "Tap: back, hold: Now Playing"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.playlists-dial": {
+		"Name": "My Playlists",
+		"Tooltip": "Scroll through your playlists and press to play one.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "Scroll playlists",
+				"Push": "Play selected playlist",
+				"Touch": "Tap: current list, hold: refresh"
+			}
+		}
+	},
+	"com.protomothis.spotify-deck-plus.liked-dial": {
+		"Name": "Liked Songs",
+		"Tooltip": "Scroll through your liked songs and press to play one.",
+		"Encoder": {
+			"TriggerDescription": {
+				"Rotate": "Scroll tracks",
+				"Push": "Play selected track",
+				"Touch": "Tap: current track, hold: refresh"
+			}
+		}
+	}
+}

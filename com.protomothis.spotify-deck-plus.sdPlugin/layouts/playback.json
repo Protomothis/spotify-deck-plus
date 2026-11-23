@@ -1,0 +1,105 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+	"id": "spotify-playback",
+	"controller": "Encoder",
+	"items": [
+		{
+			"key": "art",
+			"type": "pixmap",
+			"rect": [
+				6,
+				8,
+				52,
+				52
+			]
+		},
+		{
+			"key": "title",
+			"type": "text",
+			"rect": [
+				64,
+				8,
+				130,
+				22
+			],
+			"font": {
+				"size": 15,
+				"weight": 700
+			},
+			"alignment": "left",
+			"text-overflow": "fade",
+			"value": ""
+		},
+		{
+			"key": "artist",
+			"type": "text",
+			"rect": [
+				64,
+				32,
+				130,
+				18
+			],
+			"font": {
+				"size": 12,
+				"weight": 400
+			},
+			"color": "#a0a0a0",
+			"alignment": "left",
+			"text-overflow": "fade",
+			"value": ""
+		},
+		{
+			"key": "progress",
+			"type": "bar",
+			"rect": [
+				6,
+				68,
+				188,
+				8
+			],
+			"subtype": 0,
+			"bar_bg_c": "#3a3a3a",
+			"bar_fill_c": "#1ed760",
+			"border_w": 0,
+			"range": {
+				"min": 0,
+				"max": 100
+			},
+			"value": 0
+		},
+		{
+			"key": "elapsed",
+			"type": "text",
+			"rect": [
+				6,
+				80,
+				90,
+				16
+			],
+			"font": {
+				"size": 11,
+				"weight": 400
+			},
+			"color": "#a0a0a0",
+			"alignment": "left",
+			"value": ""
+		},
+		{
+			"key": "remaining",
+			"type": "text",
+			"rect": [
+				104,
+				80,
+				90,
+				16
+			],
+			"font": {
+				"size": 11,
+				"weight": 400
+			},
+			"color": "#a0a0a0",
+			"alignment": "right",
+			"value": ""
+		}
+	]
+}

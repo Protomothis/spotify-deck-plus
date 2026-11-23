@@ -1,0 +1,298 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "Spotify Deck+",
+	"Version": "0.1.0.0",
+	"Author": "Protomothis",
+	"Description": "Spotify controls for Stream Deck +: playback keys, a volume dial and a folder-style library browser.",
+	"Category": "Spotify Deck+",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"Icon": "imgs/plugin/marketplace",
+	"CodePath": "bin/plugin.js",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		}
+	],
+	"Nodejs": {
+		"Version": "24",
+		"Debug": "disabled"
+	},
+	"UUID": "com.protomothis.spotify-deck-plus",
+	"Actions": [
+		{
+			"Name": "Play / Pause",
+			"UUID": "com.protomothis.spotify-deck-plus.play-pause",
+			"Icon": "imgs/actions/play-pause/icon",
+			"Tooltip": "Shows the playback state over the album art; press to play or pause.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/play-pause/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Previous",
+			"UUID": "com.protomothis.spotify-deck-plus.previous",
+			"Icon": "imgs/actions/previous/icon",
+			"Tooltip": "Skips to the previous track.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/previous/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Next",
+			"UUID": "com.protomothis.spotify-deck-plus.next",
+			"Icon": "imgs/actions/next/icon",
+			"Tooltip": "Skips to the next track.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/next/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Like",
+			"UUID": "com.protomothis.spotify-deck-plus.like",
+			"Icon": "imgs/actions/like/icon",
+			"Tooltip": "Adds or removes the current track from Liked Songs.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/like/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Shuffle",
+			"UUID": "com.protomothis.spotify-deck-plus.shuffle",
+			"Icon": "imgs/actions/shuffle/icon",
+			"Tooltip": "Turns shuffle on or off.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/shuffle/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Repeat",
+			"UUID": "com.protomothis.spotify-deck-plus.repeat",
+			"Icon": "imgs/actions/repeat/icon",
+			"Tooltip": "Cycles repeat off → repeat all → repeat one.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/repeat/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Add to Playlist",
+			"UUID": "com.protomothis.spotify-deck-plus.add-to-playlist",
+			"Icon": "imgs/actions/add-to-playlist/icon",
+			"Tooltip": "Adds the current track to the playlist chosen in the key settings.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/add-to-playlist/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Switch Device",
+			"UUID": "com.protomothis.spotify-deck-plus.device",
+			"Icon": "imgs/actions/device/icon",
+			"Tooltip": "Moves playback to the next Spotify Connect device on each press.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/device/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Settings",
+			"UUID": "com.protomothis.spotify-deck-plus.setup",
+			"Icon": "imgs/actions/setup/icon",
+			"Tooltip": "Opens the Spotify Deck+ settings page (login and status) in your browser.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/setup/key",
+					"ShowTitle": false
+				}
+			],
+			"UserTitleEnabled": false,
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Playback",
+			"UUID": "com.protomothis.spotify-deck-plus.playback-dial",
+			"Icon": "imgs/actions/playback-dial/icon",
+			"Tooltip": "Shows the current track and progress.",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "layouts/playback.json",
+				"TriggerDescription": {
+					"Rotate": "Seek 5 s",
+					"Push": "Play / Pause",
+					"Touch": "Tap: next, hold: previous"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/playback-dial/key"
+				}
+			],
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Volume",
+			"UUID": "com.protomothis.spotify-deck-plus.volume-dial",
+			"Icon": "imgs/actions/volume-dial/icon",
+			"Tooltip": "Adjusts the volume of the active Spotify device.",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "layouts/volume.json",
+				"TriggerDescription": {
+					"Rotate": "Volume ±2%",
+					"Push": "Mute / Unmute",
+					"Touch": "Mute / Unmute"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/volume-dial/key"
+				}
+			],
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Library Browser",
+			"UUID": "com.protomothis.spotify-deck-plus.browse",
+			"Icon": "imgs/actions/browse/icon",
+			"Tooltip": "Browse Now Playing, queue, playlists, liked songs, artists, albums and history like folders, and play from them.",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "layouts/browse.json",
+				"TriggerDescription": {
+					"Rotate": "Scroll",
+					"Push": "Open / Play",
+					"Touch": "Tap: back, hold: Now Playing"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/browse/key"
+				}
+			],
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "My Playlists",
+			"UUID": "com.protomothis.spotify-deck-plus.playlists-dial",
+			"Icon": "imgs/actions/playlists-dial/icon",
+			"Tooltip": "Scroll through your playlists and press to play one.",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "layouts/browse.json",
+				"TriggerDescription": {
+					"Rotate": "Scroll playlists",
+					"Push": "Play selected playlist",
+					"Touch": "Tap: current list, hold: refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/playlists-dial/key"
+				}
+			],
+			"PropertyInspectorPath": "ui/settings.html"
+		},
+		{
+			"Name": "Liked Songs",
+			"UUID": "com.protomothis.spotify-deck-plus.liked-dial",
+			"Icon": "imgs/actions/liked-dial/icon",
+			"Tooltip": "Scroll through your liked songs and press to play one.",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "layouts/browse.json",
+				"TriggerDescription": {
+					"Rotate": "Scroll tracks",
+					"Push": "Play selected track",
+					"Touch": "Tap: current track, hold: refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/liked-dial/key"
+				}
+			],
+			"PropertyInspectorPath": "ui/settings.html"
+		}
+	],
+	"PropertyInspectorPath": "ui/settings.html",
+	"URL": "https://github.com/Protomothis/spotify-deck-plus"
+}

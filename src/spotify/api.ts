@@ -1,9 +1,7 @@
 import streamDeck from "@elgato/streamdeck";
-import { execFile } from "node:child_process";
-import os from "node:os";
-import { promisify } from "node:util";
 
 import { getAccessToken } from "./auth";
+import { computerName, isSpotifyRunning, launchSpotify, nudgeSpotify } from "./local";
 import { t as tr } from "../i18n";
 
 const BASE = "https://api.spotify.com/v1";
@@ -151,7 +149,6 @@ export const idFromUri = (uri: string) => uri.split(":").pop()!;
 
 // ---------- Player ----------
 
-const run = promisify(execFile);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const isNoDevice = (e: unknown) => e instanceof SpotifyError && (e.reason === "NO_ACTIVE_DEVICE" || e.status === 404);
 
@@ -159,23 +156,9 @@ let statusListener: ((msg: string | undefined) => void) | undefined;
 /** Receives progress text while the local Spotify app is being started (undefined = done). */
 export const onDeviceStatus = (fn: typeof statusListener) => void (statusListener = fn);
 
-let computerName: Promise<string> | undefined;
-/** Spotify Connect names the desktop app after the macOS computer name. */
-const localName = () =>
-	(computerName ??= run("/usr/sbin/scutil", ["--get", "ComputerName"]).then(
-		(r) => r.stdout.trim(),
-		() => os.hostname().replace(/\.local$/, ""),
-	));
-
-const spotifyRunning = () =>
-	run("/usr/bin/pgrep", ["-x", "Spotify"]).then(
-		() => true,
-		() => false,
-	);
-
 async function findLocal(acceptAnyComputer: boolean): Promise<Device | undefined> {
 	const devices = (await request<{ devices: Device[] }>("/me/player/devices")).devices.filter((d) => d.id && !d.is_restricted);
-	const name = (await localName()).normalize("NFC").toLowerCase();
+	const name = (await computerName()).normalize("NFC").toLowerCase();
 	return (
 		devices.find((d) => d.type === "Computer" && d.name.normalize("NFC").toLowerCase() === name) ??
 		(acceptAnyComputer ? devices.find((d) => d.type === "Computer") : undefined)
@@ -185,29 +168,29 @@ async function findLocal(acceptAnyComputer: boolean): Promise<Device | undefined
 let activating: Promise<string> | undefined;
 
 /**
- * Makes this Mac's Spotify app the active Connect device, launching it in the background when it
- * isn't running. Returns the device id.
+ * Makes this computer's Spotify app the active Connect device, launching it when it isn't running.
+ * Returns the device id.
  */
 export function activateLocalDevice(): Promise<string> {
 	return (activating ??= (async () => {
 		let device = await findLocal(false);
 		if (!device) {
-			if (!(await spotifyRunning())) {
+			if (!(await isSpotifyRunning())) {
 				statusListener?.(tr("openingSpotify"));
 				streamDeck.logger.info("no active device; launching Spotify");
-				await run("/usr/bin/open", ["-g", "-a", "Spotify"]);
+				await launchSpotify();
 			} else {
 				statusListener?.(tr("connectingSpotify"));
 			}
 			// A freshly launched app needs a few seconds before it registers with Spotify Connect, and an
-			// idle app can drop off Connect entirely. If it stays invisible, poke it via AppleScript:
-			// starting local playback makes it re-register.
+			// idle app can drop off Connect entirely. If it stays invisible, poke it (AppleScript on
+			// macOS): starting local playback makes it re-register.
 			for (let i = 0; i < 25 && !device; i++) {
 				await sleep(1000);
 				if (i === 5) {
-					streamDeck.logger.info("local Spotify not on Connect; nudging via AppleScript");
-					await run("/usr/bin/osascript", ["-e", 'tell application "Spotify" to play']).catch((e) =>
-						streamDeck.logger.warn(`AppleScript nudge failed: ${(e as Error).message}`),
+					await nudgeSpotify().then(
+						(tried) => tried && streamDeck.logger.info("local Spotify not on Connect; nudged it"),
+						(e) => streamDeck.logger.warn(`nudge failed: ${(e as Error).message}`),
 					);
 				}
 				device = await findLocal(i >= 10);
@@ -232,7 +215,7 @@ let lastAdopt = 0;
 export async function adoptLocalDevice(): Promise<boolean> {
 	if (activating || Date.now() - lastAdopt < 30_000) return false;
 	lastAdopt = Date.now();
-	if (!(await spotifyRunning())) return false;
+	if (!(await isSpotifyRunning())) return false;
 	const device = await findLocal(false);
 	if (!device?.id || device.is_active) return false;
 	await request("/me/player", { method: "PUT", body: { device_ids: [device.id], play: false } });

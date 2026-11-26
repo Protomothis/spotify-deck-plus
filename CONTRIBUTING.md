@@ -40,7 +40,7 @@ feature/x       ●──●           ●
 ```bash
 npm install
 npm run build && npm run link   # first time; then restart the Stream Deck app
-npm run watch                   # rebuild and restart the plugin on change
+npm run watch                   # rebuild and restart the plugin on change (restart script is macOS-only)
 npm run lint && npm run format:check
 npm run typecheck
 npm test

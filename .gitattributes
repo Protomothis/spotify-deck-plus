@@ -1,0 +1,4 @@
+# Keep LF everywhere (Prettier checks for it), including Windows CI checkouts.
+* text=auto eol=lf
+*.png binary
+*.svg text eol=lf

@@ -233,7 +233,7 @@ function page(l: Lang): string {
 <style>
 	:root { color-scheme: dark; --g: #1ed760; --bg: #121212; --card: #1e1e1e; --line: #2e2e2e; --muted: #a7a7a7; --err: #f15e6c; }
 	* { box-sizing: border-box; }
-	body { margin: 0; background: var(--bg); color: #fff; font: 15px/1.6 -apple-system, "Apple SD Gothic Neo", "Hiragino Sans", sans-serif; }
+	body { margin: 0; background: var(--bg); color: #fff; font: 15px/1.6 -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "Yu Gothic UI", sans-serif; }
 	main { max-width: 640px; margin: 0 auto; padding: 40px 20px 60px; }
 	h1 { font-size: 26px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
 	h1 .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--g); }
@@ -247,14 +247,14 @@ function page(l: Lang): string {
 	.muted { color: var(--muted); font-size: 13px; }
 	.err { color: var(--err); }
 	.row { display: flex; gap: 8px; margin-top: 12px; }
-	input { flex: 1; min-width: 0; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #fff; padding: 10px 12px; font: 14px ui-monospace, Menlo, monospace; }
+	input { flex: 1; min-width: 0; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #fff; padding: 10px 12px; font: 14px ui-monospace, Menlo, Consolas, monospace; }
 	input:focus { outline: 2px solid var(--g); border-color: transparent; }
 	button { background: var(--g); color: #000; border: 0; border-radius: 999px; padding: 10px 20px; font: inherit; font-weight: 700; cursor: pointer; }
 	button.ghost { background: transparent; color: #fff; border: 1px solid #555; }
 	button:disabled { opacity: .5; cursor: default; }
 	ol { margin: 0; padding-left: 20px; }
 	ol li { margin: 6px 0; }
-	code { background: #2a2a2a; border-radius: 6px; padding: 2px 6px; font: 13px ui-monospace, Menlo, monospace; }
+	code { background: #2a2a2a; border-radius: 6px; padding: 2px 6px; font: 13px ui-monospace, Menlo, Consolas, monospace; }
 	.copy { display: inline-flex; align-items: center; gap: 6px; }
 	.copy button { padding: 2px 10px; font-size: 12px; }
 	a { color: var(--g); }

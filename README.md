@@ -8,7 +8,7 @@ Browse your whole library from a dial, see album art on the touch strip,<br>
 and press play even when Spotify isn't open.
 
 [![Latest release](https://img.shields.io/github/v/release/Protomothis/spotify-deck-plus?label=download&color=1ed760)](https://github.com/Protomothis/spotify-deck-plus/releases/latest)
-![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey)
+![macOS | Windows](https://img.shields.io/badge/macOS%2012%2B%20%7C%20Windows%2010%2B-lightgrey)
 ![Stream Deck](https://img.shields.io/badge/Stream%20Deck-7.1%2B-blue)
 [![CI](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -24,11 +24,11 @@ and press play even when Spotify isn't open.
 |                                  |                                                                                                                                                      |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 🗂️ **Library on a dial**         | Go from _Now Playing_ up to your playlists, liked songs, artists and albums like folders, and play the exact track you pick. Long-press to queue it. |
-| ⚡ **Just press play**           | No active device? The plugin opens Spotify on your Mac in the background, makes it the player, and carries on with what you pressed.                 |
+| ⚡ **Just press play**           | No active device? The plugin opens Spotify on your computer, makes it the player, and carries on with what you pressed.                              |
 | 🎨 **Touch strip**               | Album art backdrop, live progress, cover thumbnails, and smooth scrolling for long titles.                                                           |
 | 🎛️ **Responsive controls**       | Volume and seek respond instantly and are batched behind the scenes. Steps are adjustable.                                                           |
 | 🌐 **English · 한국어 · 日本語** | Follows your Stream Deck language.                                                                                                                   |
-| 🔒 **Private**                   | Logs in with _your own_ Spotify app. Tokens never leave your Mac.                                                                                    |
+| 🔒 **Private**                   | Logs in with _your own_ Spotify app. Tokens never leave your computer.                                                                               |
 
 ## Quick start
 
@@ -37,7 +37,7 @@ and press play even when Spotify isn't open.
 3. Press **Settings** (or open <http://127.0.0.1:8888>) and follow the steps to connect Spotify. It takes about two minutes, and [the steps are explained below](#connect-spotify).
 4. Play something. 🎶
 
-> **Requirements:** macOS 12+, Stream Deck app 7.1+, and **Spotify Premium**. The dials need a Stream Deck +; the keys work on any Stream Deck.
+> **Requirements:** macOS 12+ or Windows 10+, the Spotify desktop app, Stream Deck app 7.1+, and **Spotify Premium**. The dials need a Stream Deck +; the keys work on any Stream Deck.
 
 ## Controls
 
@@ -109,12 +109,12 @@ If you log in with a **different Spotify account** from the one that owns the de
 <details>
 <summary><b>"No active device"</b></summary>
 
-The plugin opens Spotify on your Mac and switches playback to it automatically. If that doesn't work, start playing something in the Spotify app once, or use the **Switch Device** key.
+The plugin opens Spotify on your computer and switches playback to it automatically. If that doesn't work, start playing something in the Spotify app once, or use the **Switch Device** key.
 
 </details>
 
 <details>
-<summary><b>macOS asks whether Stream Deck may control Spotify</b></summary>
+<summary><b>macOS asks whether Stream Deck may control Spotify (macOS)</b></summary>
 
 Click **Allow**. The plugin uses this to wake Spotify when it has dropped off Spotify Connect. If you denied it, turn it back on in **System Settings › Privacy & Security › Automation › Stream Deck › Spotify**.
 
@@ -151,7 +151,7 @@ Another app is using port 8888. Quit it and restart the Stream Deck app.
 ## Update and uninstall
 
 - **Update:** download the newer `.streamDeckPlugin` from [Releases](https://github.com/Protomothis/spotify-deck-plus/releases) and double-click it. Your keys and settings are kept.
-- **Uninstall:** remove the plugin in the Stream Deck app (**Settings › Plugins**). Then delete `~/.config/spotify-deck-plus` to remove your login.
+- **Uninstall:** remove the plugin in the Stream Deck app (**Settings › Plugins**). Then delete `~/.config/spotify-deck-plus` (on Windows: `%USERPROFILE%\.config\spotify-deck-plus`) to remove your login.
 
 ## Privacy
 
@@ -171,7 +171,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow. Bug reports
 
 ## Limitations
 
-- macOS only.
+- **Windows** support is new. It runs in CI, but it hasn't been tested much on real hardware yet, so please [report issues](https://github.com/Protomothis/spotify-deck-plus/issues). On Windows, Spotify opens minimized instead of fully in the background, and there's no automatic wake-up for an app that has dropped off Spotify Connect.
 - Spotify's Web API doesn't expose playlist folders, so playlists appear as one list.
 
 ## Disclaimer

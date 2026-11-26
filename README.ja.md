@@ -8,7 +8,7 @@
 Spotify が起動していなくても、そのまま再生を押すだけ。
 
 [![Latest release](https://img.shields.io/github/v/release/Protomothis/spotify-deck-plus?label=download&color=1ed760)](https://github.com/Protomothis/spotify-deck-plus/releases/latest)
-![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey)
+![macOS | Windows](https://img.shields.io/badge/macOS%2012%2B%20%7C%20Windows%2010%2B-lightgrey)
 ![Stream Deck](https://img.shields.io/badge/Stream%20Deck-7.1%2B-blue)
 [![CI](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -24,11 +24,11 @@ Spotify が起動していなくても、そのまま再生を押すだけ。
 |                                   |                                                                                                                                                       |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 🗂️ **ダイヤルでライブラリを探索** | _再生中_ から上の階層へ戻り、プレイリスト・お気に入り・アーティスト・アルバムをフォルダのように開いて、選んだ曲をそのまま再生。長押しでキューに追加。 |
-| ⚡ **押すだけで再生**             | アクティブなデバイスがなければ、この Mac の Spotify をバックグラウンドで起動して再生デバイスにし、押した操作を続けて実行します。                      |
+| ⚡ **押すだけで再生**             | アクティブなデバイスがなければ、このコンピューターの Spotify を起動して再生デバイスにし、押した操作を続けて実行します。                               |
 | 🎨 **タッチストリップ**           | アルバムアートの背景、リアルタイムの進行バー、カバーのサムネイル。長いタイトルはゆっくりスクロールします。                                            |
 | 🎛️ **すばやい反応**               | 音量とシークは即座に反応し、リクエストは裏でまとめて送ります。ステップ幅も変更できます。                                                              |
 | 🌐 **English · 한국어 · 日本語**  | Stream Deck の言語に合わせて表示します。                                                                                                              |
-| 🔒 **プライバシー重視**           | _自分の_ Spotify アプリでログインし、トークンは Mac の外に出ません。                                                                                  |
+| 🔒 **プライバシー重視**           | _自分の_ Spotify アプリでログインし、トークンはコンピューターの外に出ません。                                                                         |
 
 ## クイックスタート
 
@@ -37,7 +37,7 @@ Spotify が起動していなくても、そのまま再生を押すだけ。
 3. **設定** キーを押すか <http://127.0.0.1:8888> を開き、案内に従って Spotify を接続します。2分ほどで終わります。[手順は下で説明しています](#spotify-を接続する)。
 4. 音楽を再生しましょう。🎶
 
-> **必要なもの:** macOS 12 以降、Stream Deck アプリ 7.1 以降、**Spotify Premium**。ダイヤルには Stream Deck + が必要で、キーはどの Stream Deck でも使えます。
+> **必要なもの:** macOS 12 以降または Windows 10 以降、Spotify デスクトップアプリ、Stream Deck アプリ 7.1 以降、**Spotify Premium**。ダイヤルには Stream Deck + が必要で、キーはどの Stream Deck でも使えます。
 
 ## 操作方法
 
@@ -109,12 +109,12 @@ Spotify では、自分で登録したデベロッパーアプリを通しての
 <details>
 <summary><b>「アクティブなデバイスなし」</b></summary>
 
-この Mac の Spotify を自動で起動し、再生デバイスに切り替えます。それでも動かない場合は、Spotify アプリで一度再生するか、**デバイス切替** キーを押してください。
+このコンピューターの Spotify を自動で起動し、再生デバイスに切り替えます。それでも動かない場合は、Spotify アプリで一度再生するか、**デバイス切替** キーを押してください。
 
 </details>
 
 <details>
-<summary><b>macOS が「Stream Deck が Spotify を操作しようとしています」と確認してくる</b></summary>
+<summary><b>macOS が「Stream Deck が Spotify を操作しようとしています」と確認してくる (macOS)</b></summary>
 
 **許可** をクリックしてください。Spotify が Spotify Connect の一覧から外れたときに、再び起こすために使います。拒否した場合は **システム設定 › プライバシーとセキュリティ › オートメーション › Stream Deck › Spotify** でオンに戻せます。
 
@@ -151,7 +151,7 @@ Spotify の再生操作は Premium アカウントでのみ利用できます。
 ## アップデートと削除
 
 - **アップデート:** [Releases](https://github.com/Protomothis/spotify-deck-plus/releases) から新しい `.streamDeckPlugin` をダウンロードしてダブルクリックします。配置したキーと設定はそのまま残ります。
-- **削除:** Stream Deck アプリ (**設定 › プラグイン**) でプラグインを削除します。ログイン情報も消すには `~/.config/spotify-deck-plus` フォルダを削除してください。
+- **削除:** Stream Deck アプリ (**設定 › プラグイン**) でプラグインを削除します。ログイン情報も消すには `~/.config/spotify-deck-plus` フォルダ (Windows では `%USERPROFILE%\.config\spotify-deck-plus`) を削除してください。
 
 ## プライバシー
 
@@ -171,7 +171,7 @@ npm run build && npm run link   # その後 Stream Deck アプリを再起動
 
 ## 制限事項
 
-- macOS 専用です。
+- **Windows** 対応は追加されたばかりです。CI ではテストしていますが、実機ではまだ十分に検証されていません。問題があれば [Issues](https://github.com/Protomothis/spotify-deck-plus/issues) で教えてください。Windows では Spotify は完全なバックグラウンドではなく最小化された状態で起動し、Spotify Connect から外れたアプリを自動で起こす機能はありません。
 - Spotify Web API はプレイリストのフォルダを提供していないため、プレイリストはフォルダなしの一覧で表示されます。
 
 ## 免責事項

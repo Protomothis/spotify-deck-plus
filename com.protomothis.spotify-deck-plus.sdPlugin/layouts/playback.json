@@ -6,22 +6,12 @@
 		{
 			"key": "art",
 			"type": "pixmap",
-			"rect": [
-				6,
-				8,
-				52,
-				52
-			]
+			"rect": [6, 8, 52, 52]
 		},
 		{
 			"key": "title",
 			"type": "text",
-			"rect": [
-				64,
-				8,
-				130,
-				22
-			],
+			"rect": [64, 8, 130, 22],
 			"font": {
 				"size": 15,
 				"weight": 700
@@ -33,12 +23,7 @@
 		{
 			"key": "artist",
 			"type": "text",
-			"rect": [
-				64,
-				32,
-				130,
-				18
-			],
+			"rect": [64, 32, 130, 18],
 			"font": {
 				"size": 12,
 				"weight": 400
@@ -51,12 +36,7 @@
 		{
 			"key": "progress",
 			"type": "bar",
-			"rect": [
-				6,
-				68,
-				188,
-				8
-			],
+			"rect": [6, 68, 188, 8],
 			"subtype": 0,
 			"bar_bg_c": "#3a3a3a",
 			"bar_fill_c": "#1ed760",
@@ -70,12 +50,7 @@
 		{
 			"key": "elapsed",
 			"type": "text",
-			"rect": [
-				6,
-				80,
-				90,
-				16
-			],
+			"rect": [6, 80, 90, 16],
 			"font": {
 				"size": 11,
 				"weight": 400
@@ -87,12 +62,7 @@
 		{
 			"key": "remaining",
 			"type": "text",
-			"rect": [
-				104,
-				80,
-				90,
-				16
-			],
+			"rect": [104, 80, 90, 16],
 			"font": {
 				"size": 11,
 				"weight": 400

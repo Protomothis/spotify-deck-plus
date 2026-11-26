@@ -319,4 +319,3 @@ export class LikedSongsDial extends ListDial {
 		return tr("noLiked");
 	}
 }
-

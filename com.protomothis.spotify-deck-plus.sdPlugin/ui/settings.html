@@ -10,7 +10,11 @@
 			body {
 				margin: 0;
 				padding: 8px 12px 16px;
-				font: 12px/1.45 -apple-system, "Apple SD Gothic Neo", "Hiragino Sans", sans-serif;
+				font:
+					12px/1.45 -apple-system,
+					"Apple SD Gothic Neo",
+					"Hiragino Sans",
+					sans-serif;
 				color: #d8d8d8;
 				background: #2d2d2d;
 			}
@@ -83,7 +87,9 @@
 		<section id="playlist-section" hidden>
 			<h3 data-t="playlist"></h3>
 			<div class="row">
-				<select id="playlist"><option value="" data-t="loading"></option></select>
+				<select id="playlist">
+					<option value="" data-t="loading"></option>
+				</select>
 				<button class="secondary" id="reload" data-t-title="reload">↻</button>
 			</div>
 		</section>
@@ -133,10 +139,18 @@
 			let T = TEXT.en;
 			const $ = (id) => document.getElementById(id);
 			const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-			let ws, uuid, actionUUID, settings = {};
+			let ws,
+				uuid,
+				actionUUID,
+				settings = {};
 
 			function applyText(lang) {
-				T = TEXT[String(lang ?? "en").toLowerCase().split(/[-_]/)[0]] ?? TEXT.en;
+				T =
+					TEXT[
+						String(lang ?? "en")
+							.toLowerCase()
+							.split(/[-_]/)[0]
+					] ?? TEXT.en;
 				document.documentElement.lang = lang ?? "en";
 				document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = T[el.dataset.t]));
 				document.querySelectorAll("[data-t-title]").forEach((el) => (el.title = T[el.dataset.tTitle]));

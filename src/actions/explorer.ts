@@ -69,13 +69,15 @@ function cached(id: string, load: () => Promise<Item[]>): Promise<Item[]> {
 	return value;
 }
 
-const folder = (id: string, title: string, items: () => Promise<Item[]>, extra: Partial<Frame> = {}) => async (): Promise<Frame> => ({
-	id,
-	title,
-	items: await cached(id, items),
-	cursor: 0,
-	...extra,
-});
+const folder =
+	(id: string, title: string, items: () => Promise<Item[]>, extra: Partial<Frame> = {}) =>
+	async (): Promise<Frame> => ({
+		id,
+		title,
+		items: await cached(id, items),
+		cursor: 0,
+		...extra,
+	});
 
 const playAll = (title: string, play: () => Promise<unknown>): Item => ({ id: "play-all", title: `▶ ${title}`, play });
 
@@ -111,7 +113,10 @@ const albumFolder = (a: AlbumSimple, subtitle?: string): Item => ({
 	title: a.name,
 	subtitle: subtitle ?? [a.album_type === "single" ? t("single") : t("album"), a.release_date?.slice(0, 4)].filter(Boolean).join(" · "),
 	uri: a.uri,
-	open: folder(`al:${a.id}`, a.name, async () => [playAll(t("playAlbum"), () => player.play({ context_uri: a.uri })), ...contextItems(await albums.entries(a.id), a.uri)]),
+	open: folder(`al:${a.id}`, a.name, async () => [
+		playAll(t("playAlbum"), () => player.play({ context_uri: a.uri })),
+		...contextItems(await albums.entries(a.id), a.uri),
+	]),
 });
 
 const artistFolder = (id: string, name: string, subtitle?: string): Item => {
@@ -192,7 +197,10 @@ function rootFrame(): Frame {
 					title: p.name,
 					subtitle: p.owner.display_name,
 					uri: p.uri,
-					open: folder(`pl:${p.id}`, p.name, async () => [playAll(t("playAll"), () => player.play({ context_uri: p.uri })), ...contextItems(await playlists.entries(p.id), p.uri)]),
+					open: folder(`pl:${p.id}`, p.name, async () => [
+						playAll(t("playAll"), () => player.play({ context_uri: p.uri })),
+						...contextItems(await playlists.entries(p.id), p.uri),
+					]),
 				})),
 			),
 		},
@@ -309,7 +317,13 @@ export class ExplorerDial extends PlayerAction {
 		const header = this.scroll(a, "header", crumbs.length ? crumbs.slice(-2).join(" › ") : t("library"), 138, 13);
 		if (f.loading || !f.items.length) {
 			const msg = f.loading ? t("loading") : (f.error ?? t("empty"));
-			return this.feedback(a, { header, pos: "", prev: n.stack.length > 1 ? t("tapBack") : "", cur: { value: this.scroll(a, "cur", msg, 186, 17), color: f.error ? DIM : "#ffffff" }, next: "" });
+			return this.feedback(a, {
+				header,
+				pos: "",
+				prev: n.stack.length > 1 ? t("tapBack") : "",
+				cur: { value: this.scroll(a, "cur", msg, 186, 17), color: f.error ? DIM : "#ffffff" },
+				next: "",
+			});
 		}
 
 		const playingTrack = s.playback?.item?.uri;
@@ -319,8 +333,7 @@ export class ExplorerDial extends PlayerAction {
 		if (f.follow && nowIdx >= 0 && Date.now() - n.lastTouched > IDLE_MS) f.cursor = nowIdx;
 		f.cursor = Math.max(0, Math.min(f.cursor, f.items.length - 1));
 
-		const label = (it?: Item) =>
-			it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.subtitle ? ` · ${it.subtitle}` : ""}${it.open ? "  ›" : ""}` : "";
+		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.subtitle ? ` · ${it.subtitle}` : ""}${it.open ? "  ›" : ""}` : "");
 		const cur = f.items[f.cursor];
 		return this.feedback(a, {
 			header,

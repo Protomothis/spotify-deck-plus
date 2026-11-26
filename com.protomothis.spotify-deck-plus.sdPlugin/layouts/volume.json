@@ -6,12 +6,7 @@
 		{
 			"key": "title",
 			"type": "text",
-			"rect": [
-				8,
-				4,
-				184,
-				20
-			],
+			"rect": [8, 4, 184, 20],
 			"font": {
 				"size": 13,
 				"weight": 600
@@ -24,22 +19,12 @@
 		{
 			"key": "icon",
 			"type": "pixmap",
-			"rect": [
-				8,
-				30,
-				44,
-				44
-			]
+			"rect": [8, 30, 44, 44]
 		},
 		{
 			"key": "value",
 			"type": "text",
-			"rect": [
-				60,
-				30,
-				132,
-				28
-			],
+			"rect": [60, 30, 132, 28],
 			"font": {
 				"size": 22,
 				"weight": 700
@@ -50,12 +35,7 @@
 		{
 			"key": "indicator",
 			"type": "bar",
-			"rect": [
-				60,
-				64,
-				132,
-				10
-			],
+			"rect": [60, 64, 132, 10],
 			"subtype": 0,
 			"bar_bg_c": "#3a3a3a",
 			"bar_fill_c": "#1ed760",

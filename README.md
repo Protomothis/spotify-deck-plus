@@ -17,7 +17,7 @@ Playback keys, a smooth volume dial, and a library browser you navigate like fol
 
 ## Features
 
-- **Library browser on a dial.** Go from *Now Playing* up to your playlists, liked songs, artists, saved albums, queue and history, open any of them, and play from the exact track you pick.
+- **Library browser on a dial.** Go from _Now Playing_ up to your playlists, liked songs, artists, saved albums, queue and history, open any of them, and play from the exact track you pick.
 - **Works even when Spotify isn't running.** If no device is active, the plugin opens Spotify on this Mac in the background, makes it the playback device, and runs the command you pressed.
 - **Live touch-strip UI.** Album art, progress bar, and smooth scrolling for long titles.
 - **Responsive controls.** Volume and seek changes are applied instantly and sent to Spotify in batches, so a fast turn doesn't flood the API. Slow commands show a spinner instead of an error.
@@ -28,26 +28,26 @@ Playback keys, a smooth volume dial, and a library browser you navigate like fol
 
 ### Keys
 
-| Action | What it does |
-| --- | --- |
-| Play / Pause | Album art background with the play state |
-| Previous / Next | Skip tracks |
-| Like | Add or remove the current track from Liked Songs |
-| Shuffle | Toggle shuffle |
-| Repeat | Off → All → One |
+| Action          | What it does                                                   |
+| --------------- | -------------------------------------------------------------- |
+| Play / Pause    | Album art background with the play state                       |
+| Previous / Next | Skip tracks                                                    |
+| Like            | Add or remove the current track from Liked Songs               |
+| Shuffle         | Toggle shuffle                                                 |
+| Repeat          | Off → All → One                                                |
 | Add to Playlist | Add the current track to a playlist chosen in the key settings |
-| Switch Device | Cycle playback through your Spotify Connect devices |
-| Settings | Open the settings page (login and status) |
+| Switch Device   | Cycle playback through your Spotify Connect devices            |
+| Settings        | Open the settings page (login and status)                      |
 
 ### Dials (Stream Deck +)
 
-| Dial | Rotate | Push | Touch |
-| --- | --- | --- | --- |
-| Playback | Seek ±5 s | Play / Pause | Tap: next · Hold: previous |
-| Volume | ±2 % | Mute / Unmute | Mute / Unmute |
-| Library Browser | Scroll | Open folder / Play | Tap: back · Hold: Now Playing |
-| My Playlists | Scroll | Play playlist | Tap: current list · Hold: refresh |
-| Liked Songs | Scroll | Play track | Tap: current track · Hold: refresh |
+| Dial            | Rotate    | Push               | Touch                              |
+| --------------- | --------- | ------------------ | ---------------------------------- |
+| Playback        | Seek ±5 s | Play / Pause       | Tap: next · Hold: previous         |
+| Volume          | ±2 %      | Mute / Unmute      | Mute / Unmute                      |
+| Library Browser | Scroll    | Open folder / Play | Tap: back · Hold: Now Playing      |
+| My Playlists    | Scroll    | Play playlist      | Tap: current list · Hold: refresh  |
+| Liked Songs     | Scroll    | Play track         | Tap: current track · Hold: refresh |
 
 The library browser starts at the root:
 
@@ -98,14 +98,14 @@ Restart the Stream Deck app once so it picks up the linked plugin.
 That's it. The settings page shows your account, what's playing, and a re-login prompt if a new version needs extra permissions.
 
 > [!NOTE]
-> New Spotify apps start in *Development mode*, which is fine for personal use. To let other Spotify accounts use your Client ID, add them under **User Management** in the dashboard.
+> New Spotify apps start in _Development mode_, which is fine for personal use. To let other Spotify accounts use your Client ID, add them under **User Management** in the dashboard.
 
 ## How it works
 
 - **Authentication** uses OAuth Authorization Code with PKCE, so no client secret is needed. Tokens are stored in `~/.config/spotify-deck-plus/tokens.json` with `0600` permissions and refreshed automatically.
 - **Settings server.** A small HTTP server listens on `127.0.0.1:8888` only. It serves the settings page and receives the OAuth callback. It rejects requests addressed to any other host, as well as cross-origin writes.
 - **State.** One shared poller reads `/me/player` every 2 seconds, and only while an action is visible. Every key and dial renders from that same state.
-- **Device activation.** When Spotify reports *no active device*, the plugin does the following:
+- **Device activation.** When Spotify reports _no active device_, the plugin does the following:
   1. Opens Spotify in the background if it isn't running (`open -g -a Spotify`).
   2. Waits for this Mac to appear among your Spotify Connect devices.
   3. Transfers playback to it and retries the command.

@@ -95,7 +95,15 @@ export type Track = {
 	show?: { name: string; images: Image[] };
 	images?: Image[];
 };
-export type Device = { id: string | null; name: string; type: string; is_active: boolean; volume_percent: number | null; supports_volume?: boolean; is_restricted?: boolean };
+export type Device = {
+	id: string | null;
+	name: string;
+	type: string;
+	is_active: boolean;
+	volume_percent: number | null;
+	supports_volume?: boolean;
+	is_restricted?: boolean;
+};
 export type Context = { type: string; uri: string } | null;
 export type Playback = {
 	device: Device;
@@ -158,7 +166,11 @@ const localName = () =>
 		() => os.hostname().replace(/\.local$/, ""),
 	));
 
-const spotifyRunning = () => run("/usr/bin/pgrep", ["-x", "Spotify"]).then(() => true, () => false);
+const spotifyRunning = () =>
+	run("/usr/bin/pgrep", ["-x", "Spotify"]).then(
+		() => true,
+		() => false,
+	);
 
 async function findLocal(acceptAnyComputer: boolean): Promise<Device | undefined> {
 	const devices = (await request<{ devices: Device[] }>("/me/player/devices")).devices.filter((d) => d.id && !d.is_restricted);

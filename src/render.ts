@@ -21,6 +21,10 @@ export const glyph = {
 	volume: "M3 9.5h3.5L11 5v14l-4.5-4.5H3zm11.2-1.6a5.5 5.5 0 0 1 0 8.2l-1.4-1.4a3.5 3.5 0 0 0 0-5.4zm2.8-2.8a9.5 9.5 0 0 1 0 13.8l-1.4-1.4a7.5 7.5 0 0 0 0-11z",
 	mute: "M3 9.5h3.5L11 5v14l-4.5-4.5H3zm11.3-.3 2.2 2.2 2.2-2.2 1.4 1.4-2.2 2.2 2.2 2.2-1.4 1.4-2.2-2.2-2.2 2.2-1.4-1.4 2.2-2.2-2.2-2.2z",
 	list: "M3 6h12v2H3zm0 4.5h12v2H3zM3 15h8v2H3zm14-9h4v2h-2.5v8.5a2.5 2.5 0 1 1-1.5-2.3z",
+	lines: "M3 6h18v2H3zm0 5h18v2H3zm0 5h12v2H3z",
+	disc: "M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm0 7a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z",
+	person: "M12 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zM3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5z",
+	clock: "M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm0 2a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zM11 7h2v4.6l3.2 1.9-1 1.7L11 12.7z",
 	spotify:
 		"M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm4.3 13.7a.6.6 0 0 1-.8.2c-2.3-1.4-5.1-1.7-8.5-.9a.6.6 0 1 1-.3-1.2c3.7-.8 6.8-.5 9.4 1.1.3.2.4.5.2.8zm1.2-2.6a.7.7 0 0 1-1 .2c-2.6-1.6-6.6-2.1-9.7-1.1a.7.7 0 1 1-.4-1.4c3.5-1.1 7.9-.6 10.9 1.3.3.2.4.7.2 1zm.1-2.7C14.5 9 9.4 8.8 6.4 9.7a.9.9 0 1 1-.5-1.7c3.4-1 9-.8 12.6 1.3a.9.9 0 0 1-.9 1.6z",
 };
@@ -38,12 +42,14 @@ export type KeyImage = {
 	/** Small badge text in the top-right corner (e.g. "1" for repeat-one). */
 	badge?: string;
 	bg?: string;
+	/** Glyph scale factor (1 = normal), used for small animations. */
+	scale?: number;
 };
 
 /** Builds a 144×144 key image. */
-export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = "#141414" }: KeyImage): string {
-	const size = 72;
-	const y = label ? 26 : 36;
+export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = "#141414", scale = 1 }: KeyImage): string {
+	const size = 72 * scale;
+	const y = (label ? 26 : 36) - (size - 72) / 2;
 	const parts = [`<rect width="144" height="144" fill="${bg}"/>`];
 	if (art) {
 		parts.push(`<image href="${art}" width="144" height="144" preserveAspectRatio="xMidYMid slice"/>`);
@@ -67,7 +73,9 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 
 /** Small icon (for dial touch-strip pixmaps). */
 export function iconSvg(g: string, color = "#ffffff", size = 48): string {
-	return toDataUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" d="${g}"/></svg>`);
+	return toDataUrl(
+		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" fill-rule="evenodd" d="${g}"/></svg>`,
+	);
 }
 
 /** Loading spinner key image; `frame` advances the arc by 30°. */
@@ -93,9 +101,21 @@ export function fetchArt(url: string | undefined): Promise<string | undefined> {
 			)
 			.catch(() => undefined);
 		artCache.set(url, p);
-		if (artCache.size > 30) artCache.delete(artCache.keys().next().value!);
+		if (artCache.size > 120) artCache.delete(artCache.keys().next().value!);
 	}
 	return p;
+}
+
+/** Full touch-strip background (200×100) made from album art, darkened for legibility. */
+export function artBackground(art: string | undefined): string {
+	const img = art?.startsWith("data:image/svg") ? undefined : art;
+	return toDataUrl(
+		`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">` +
+			`<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0.55"/><stop offset="1" stop-color="#000" stop-opacity="0.8"/></linearGradient></defs>` +
+			`<rect width="200" height="100" fill="#000"/>` +
+			(img ? `<image href="${img}" x="0" y="-50" width="200" height="200" preserveAspectRatio="xMidYMid slice" opacity="0.6"/>` : "") +
+			`<rect width="200" height="100" fill="url(#g)"/></svg>`,
+	);
 }
 
 export const fmtTime = (ms: number) => {

@@ -125,6 +125,8 @@ export type ListEntry = {
 	/** Position inside the context (for offset playback). */
 	position: number;
 	playable: boolean;
+	/** Small cover image url, if known. */
+	image?: string;
 };
 
 type Page<T> = { items: T[]; next: string | null; total: number };
@@ -141,11 +143,10 @@ async function paginate<T>(first: string, query: Record<string, string | number>
 }
 
 export const artistLine = (t: Track | null | undefined) => t?.artists?.map((a) => a.name).join(", ") ?? t?.show?.name ?? "";
-export const artUrl = (t: Track | null | undefined, prefer = 300): string | undefined => {
-	const imgs = t?.album?.images ?? t?.images ?? t?.show?.images ?? [];
-	if (!imgs.length) return undefined;
-	return [...imgs].sort((a, b) => Math.abs((a.width ?? prefer) - prefer) - Math.abs((b.width ?? prefer) - prefer))[0].url;
-};
+/** The image closest to `prefer` px wide. */
+export const pickImage = (imgs: Image[] | null | undefined, prefer = 300): string | undefined =>
+	imgs?.length ? [...imgs].sort((a, b) => Math.abs((a.width ?? prefer) - prefer) - Math.abs((b.width ?? prefer) - prefer))[0].url : undefined;
+export const artUrl = (t: Track | null | undefined, prefer = 300): string | undefined => pickImage(t?.album?.images ?? t?.images ?? t?.show?.images, prefer);
 export const idFromUri = (uri: string) => uri.split(":").pop()!;
 
 // ---------- Player ----------
@@ -306,7 +307,9 @@ export const library = {
 	async likedSongs(max = 500): Promise<ListEntry[]> {
 		const { items } = await paginate<{ track: Track | null }>("/me/tracks", { limit: 50 }, max);
 		return items.flatMap((it, i) =>
-			it.track ? [{ uri: it.track.uri, title: it.track.name, subtitle: artistLine(it.track), position: i, playable: !it.track.is_local }] : [],
+			it.track
+				? [{ uri: it.track.uri, title: it.track.name, subtitle: artistLine(it.track), position: i, playable: !it.track.is_local, image: artUrl(it.track, 64) }]
+				: [],
 		);
 	},
 };
@@ -337,7 +340,7 @@ export const playlists = {
 		return rows.map((r, i) => {
 			const t = r.item ?? r.track;
 			return t
-				? { uri: t.uri, title: t.name, subtitle: artistLine(t), position: i, playable: !t.is_local }
+				? { uri: t.uri, title: t.name, subtitle: artistLine(t), position: i, playable: !t.is_local, image: artUrl(t, 64) }
 				: { uri: "", title: tr("unavailableTrack"), subtitle: "", position: i, playable: false };
 		});
 	},
@@ -366,8 +369,8 @@ export const albums = {
 
 // ---------- Artists / queue / history ----------
 
-export type ArtistFull = Artist & { uri: string; genres?: string[] };
-export type AlbumSimple = { id: string; uri: string; name: string; album_type: string; release_date?: string; artists: Artist[] };
+export type ArtistFull = Artist & { uri: string; genres?: string[]; images?: Image[] };
+export type AlbumSimple = { id: string; uri: string; name: string; album_type: string; release_date?: string; artists: Artist[]; images?: Image[] };
 
 /** True when a 403 is caused by the login missing a scope (needs re-login). */
 export const isScopeError = (e: unknown) => e instanceof SpotifyError && e.status === 403 && /scope/i.test(e.message);

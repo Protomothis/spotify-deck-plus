@@ -2,14 +2,16 @@ import { action, type DialDownEvent, type DialRotateEvent, type DialUpEvent, typ
 import type { JsonObject } from "@elgato/utils";
 import type { Action } from "@elgato/streamdeck";
 
-import { DIM, GREEN } from "../render";
+import { DIM, fetchArt, glyph, GREEN, iconSvg } from "../render";
 import {
 	albums,
 	artistLine,
 	artists,
+	artUrl,
 	describeError,
 	isScopeError,
 	library,
+	pickImage,
 	me,
 	player,
 	playlists,
@@ -34,6 +36,9 @@ type Item = {
 	/** Present on folders: loads the children shown after entering. */
 	open?: () => Promise<Frame>;
 	play?: () => Promise<unknown>;
+	/** Cover image url shown as the thumbnail, or a glyph when there is no image. */
+	image?: string;
+	icon?: string;
 	/** Track / episode uri that a long press adds to the queue. */
 	queueUri?: string;
 	disabled?: boolean;
@@ -60,6 +65,7 @@ const TOAST_MS = 1800;
 const IDLE_MS = 6000;
 const CACHE_MS = 5 * 60_000;
 const scopeMsg = () => t("scopeMissing");
+const BLANK = iconSvg("", "#000000");
 
 // ---------------------------------------------------------------- data → items
 
@@ -85,14 +91,15 @@ const folder =
 		...extra,
 	});
 
-const playAll = (title: string, play: () => Promise<unknown>): Item => ({ id: "play-all", title: `▶ ${title}`, play });
+const playAll = (title: string, play: () => Promise<unknown>): Item => ({ id: "play-all", title, icon: glyph.play, play });
 
 /** Context entries (playlist / album / liked) that play inside their context. */
-const contextItems = (entries: ListEntry[], contextUri: string, byUri = false): Item[] =>
+const contextItems = (entries: ListEntry[], contextUri: string, byUri = false, image?: string): Item[] =>
 	entries.map((e) => ({
 		id: `${contextUri}#${e.position}`,
 		title: e.title,
 		subtitle: e.subtitle,
+		image: e.image ?? image,
 		uri: e.uri,
 		queueUri: e.playable ? e.uri : undefined,
 		disabled: !e.playable,
@@ -106,6 +113,7 @@ const trackListItems = (tracks: Track[], idPrefix: string): Item[] => {
 		id: `${idPrefix}#${i}`,
 		title: t.name,
 		subtitle: artistLine(t),
+		image: artUrl(t, 64),
 		uri: t.uri,
 		queueUri: t.is_local ? undefined : t.uri,
 		disabled: !!t.is_local,
@@ -121,18 +129,21 @@ const albumFolder = (a: AlbumSimple, subtitle?: string): Item => ({
 	title: a.name,
 	subtitle: subtitle ?? [a.album_type === "single" ? t("single") : t("album"), a.release_date?.slice(0, 4)].filter(Boolean).join(" · "),
 	uri: a.uri,
+	image: pickImage(a.images, 64),
 	open: folder(`al:${a.id}`, a.name, async () => [
 		playAll(t("playAlbum"), () => player.play({ context_uri: a.uri })),
-		...contextItems(await albums.entries(a.id), a.uri),
+		...contextItems(await albums.entries(a.id), a.uri, false, pickImage(a.images, 64)),
 	]),
 });
 
-const artistFolder = (id: string, name: string, subtitle?: string): Item => {
+const artistFolder = (id: string, name: string, subtitle?: string, image?: string): Item => {
 	const uri = `spotify:artist:${id}`;
 	return {
 		id: `ar:${id}`,
 		title: name,
 		subtitle,
+		image,
+		icon: glyph.person,
 		uri,
 		open: folder(`ar:${id}`, name, async () => {
 			const list = await artists.albums(id);
@@ -141,6 +152,7 @@ const artistFolder = (id: string, name: string, subtitle?: string): Item => {
 				{
 					id: `ar:${id}:top`,
 					title: t("topTracks"),
+					icon: glyph.heart,
 					open: folder(`ar:${id}:top`, t("artistTopTracks", name), async () => trackListItems(await artists.topTracks(id), `ar:${id}:top`)),
 				},
 				...list.map((a) => albumFolder(a)),
@@ -175,10 +187,11 @@ async function nowPlayingFrame(): Promise<Frame> {
 
 function rootFrame(): Frame {
 	const items: Item[] = [
-		{ id: "now", title: t("nowPlaying"), open: nowPlayingFrame },
+		{ id: "now", title: t("nowPlaying"), icon: glyph.play, open: nowPlayingFrame },
 		{
 			id: "queue",
 			title: t("upNext"),
+			icon: glyph.lines,
 			// Not cached: the queue changes constantly.
 			open: async () => {
 				const { current, queue: next } = await queue();
@@ -186,25 +199,30 @@ function rootFrame(): Frame {
 					id: `q#${i}`,
 					title: t.name,
 					subtitle: artistLine(t),
+					image: artUrl(t, 64),
 					uri: t.uri,
+					queueUri: t.uri,
 					// Jumping into the queue = skipping forward to that entry.
 					play: async () => {
 						for (let n = 0; n <= Math.min(i, 30); n++) await player.next();
 					},
 				}));
-				if (current) items.unshift({ id: "q#now", title: current.name, subtitle: artistLine(current), uri: current.uri });
+				if (current) items.unshift({ id: "q#now", title: current.name, subtitle: artistLine(current), image: artUrl(current, 64), uri: current.uri });
 				return { id: "queue", title: t("queue"), items, cursor: 0, error: items.length ? undefined : t("queueEmpty") };
 			},
 		},
 		{
 			id: "playlists",
 			title: t("myPlaylists"),
+			icon: glyph.list,
 			open: folder("playlists", t("myPlaylists"), async () =>
 				(await playlists.mine()).map((p) => ({
 					id: `pl:${p.id}`,
 					title: p.name,
 					subtitle: p.owner.display_name,
 					uri: p.uri,
+					image: pickImage(p.images, 64),
+					icon: glyph.list,
 					open: folder(`pl:${p.id}`, p.name, async () => [
 						playAll(t("playAll"), () => player.play({ context_uri: p.uri })),
 						...contextItems(await playlists.entries(p.id), p.uri),
@@ -215,6 +233,7 @@ function rootFrame(): Frame {
 		{
 			id: "liked",
 			title: t("likedSongs"),
+			icon: glyph.heart,
 			open: folder("liked", t("likedSongs"), async () => {
 				const ctx = `spotify:user:${await getUserId()}:collection`;
 				return [playAll(t("playAll"), () => player.play({ context_uri: ctx })), ...contextItems(await library.likedSongs(), ctx, true)];
@@ -223,19 +242,20 @@ function rootFrame(): Frame {
 		{
 			id: "artists",
 			title: t("artists"),
+			icon: glyph.person,
 			open: async () => {
 				const items: Item[] = [];
 				const seen = new Set<string>();
-				const add = (id: string, name: string, sub?: string) => {
+				const add = (id: string, name: string, sub?: string, image?: string) => {
 					if (seen.has(id)) return;
 					seen.add(id);
-					items.push(artistFolder(id, name, sub));
+					items.push(artistFolder(id, name, sub, image));
 				};
 				for (const a of store.state.playback?.item?.artists ?? []) add(a.id, a.name, t("listeningNow"));
 				let error: string | undefined;
 				const [followed, top] = await Promise.allSettled([artists.followed(), artists.top()]);
-				if (followed.status === "fulfilled") followed.value.forEach((a) => add(a.id, a.name, t("following")));
-				if (top.status === "fulfilled") top.value.forEach((a) => add(a.id, a.name, t("frequent")));
+				if (followed.status === "fulfilled") followed.value.forEach((a) => add(a.id, a.name, t("following"), pickImage(a.images, 64)));
+				if (top.status === "fulfilled") top.value.forEach((a) => add(a.id, a.name, t("frequent"), pickImage(a.images, 64)));
 				const failed = [followed, top].find((r): r is PromiseRejectedResult => r.status === "rejected");
 				if (failed) {
 					const msg = isScopeError(failed.reason) ? scopeMsg() : describeError(failed.reason);
@@ -248,11 +268,13 @@ function rootFrame(): Frame {
 		{
 			id: "albums",
 			title: t("savedAlbums"),
+			icon: glyph.disc,
 			open: folder("albums", t("savedAlbums"), async () => (await savedAlbums()).map((a) => albumFolder(a, a.artists.map((x) => x.name).join(", ")))),
 		},
 		{
 			id: "recent",
 			title: t("recent"),
+			icon: glyph.clock,
 			open: async () => {
 				try {
 					return { id: "recent", title: t("recent"), items: trackListItems(await recentlyPlayed(), "recent"), cursor: 0 };
@@ -311,9 +333,16 @@ export class ExplorerDial extends PlayerAction {
 		for (const a of this.actions) if (a.id === id) void this.render(a, store.state);
 	}
 
-	protected render(a: Action<JsonObject>, s: PlayerState) {
+	protected async render(a: Action<JsonObject>, s: PlayerState): Promise<void> {
 		if (!s.loggedIn) {
-			return this.feedback(a, { header: "Spotify Deck", pos: "", prev: "", cur: { value: t("notLoggedIn"), color: "#ffffff" }, next: t("loginHint") });
+			return this.feedback(a, {
+				header: "Spotify Deck+",
+				pos: "",
+				thumb: BLANK,
+				prev: "",
+				cur: { value: t("notLoggedIn"), color: "#ffffff" },
+				next: t("loginHint"),
+			});
 		}
 		const n = this.nav(a.id);
 		let f = n.stack[n.stack.length - 1];
@@ -332,8 +361,9 @@ export class ExplorerDial extends PlayerAction {
 			return this.feedback(a, {
 				header,
 				pos: "",
+				thumb: f.loading ? iconSvg(glyph.clock, DIM) : BLANK,
 				prev: n.stack.length > 1 ? t("tapBack") : "",
-				cur: { value: this.scroll(a, "cur", msg, 186, 17), color: f.error ? DIM : "#ffffff" },
+				cur: { value: this.scroll(a, "cur", msg, 158, 17), color: f.error ? DIM : "#ffffff" },
 				next: "",
 			});
 		}
@@ -350,11 +380,13 @@ export class ExplorerDial extends PlayerAction {
 
 		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.subtitle ? ` · ${it.subtitle}` : ""}${it.open ? "  ›" : ""}` : "");
 		const cur = f.items[f.cursor];
+		const thumb = (cur.image && (await fetchArt(cur.image))) || (cur.icon ? iconSvg(cur.icon, isNow(cur) ? GREEN : "#ffffff") : BLANK);
 		return this.feedback(a, {
+			thumb,
 			header,
 			pos: `${f.cursor + 1}/${f.items.length}`,
 			prev: label(f.items[f.cursor - 1]),
-			cur: { value: this.scroll(a, "cur", label(cur), 186, 17), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
+			cur: { value: this.scroll(a, "cur", label(cur), 158, 17), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
 			next: next ?? { value: label(f.items[f.cursor + 1]), color: "#7a7a7a" },
 		});
 	}

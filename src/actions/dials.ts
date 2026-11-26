@@ -6,6 +6,7 @@ import { artistLine, artUrl, library, me, player, playlists, type ListEntry } fr
 import { command, store, type PlayerState } from "../spotify/store";
 import { PlayerAction } from "./base";
 import { t as tr } from "../i18n";
+import { SEEK_STEPS, stepSetting, VOLUME_STEPS, type DialSettings } from "../settings";
 
 const alert = (a: Action<JsonObject>) => () => void (a.isDial() && a.showAlert());
 
@@ -37,11 +38,12 @@ export class PlaybackDial extends PlayerAction {
 		});
 	}
 
-	/** Rotate: seek 5 s per tick (debounced so fast spins send one request). */
-	override onDialRotate(ev: DialRotateEvent): void {
+	/** Rotate: seek `seekStep` seconds per tick (debounced so fast spins send one request). */
+	override onDialRotate(ev: DialRotateEvent<DialSettings>): void {
 		const t = store.state.playback?.item;
 		if (!t) return;
-		this.seekTarget = Math.max(0, Math.min(t.duration_ms - 1000, (this.seekTarget ?? store.progress()) + ev.payload.ticks * 5000));
+		const step = stepSetting(ev.payload.settings.seekStep, SEEK_STEPS, 5) * 1000;
+		this.seekTarget = Math.max(0, Math.min(t.duration_ms - 1000, (this.seekTarget ?? store.progress()) + ev.payload.ticks * step));
 		this.renderAll();
 		clearTimeout(this.seekTimer);
 		this.seekTimer = setTimeout(async () => {
@@ -138,11 +140,11 @@ export class VolumeDial extends PlayerAction {
 		}, 2000);
 	}
 
-	/** Rotate: ±2 % per tick. */
-	override onDialRotate(ev: DialRotateEvent): void {
+	/** Rotate: ±`volumeStep` % per tick. */
+	override onDialRotate(ev: DialRotateEvent<DialSettings>): void {
 		const vol = this.current();
 		if (vol === undefined) return void ev.action.showAlert();
-		this.set(vol + ev.payload.ticks * 2, ev.action);
+		this.set(vol + ev.payload.ticks * stepSetting(ev.payload.settings.volumeStep, VOLUME_STEPS, 2), ev.action);
 	}
 
 	/** Press / tap: mute toggle (restores the previous level). */

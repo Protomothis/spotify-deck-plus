@@ -42,7 +42,7 @@
 		"Tooltip": "Shows the current track and progress.",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "Seek 5 s",
+				"Rotate": "Seek",
 				"Push": "Play / Pause",
 				"Touch": "Tap: next, hold: previous"
 			}
@@ -53,7 +53,7 @@
 		"Tooltip": "Adjusts the volume of the active Spotify device.",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "Volume ±2%",
+				"Rotate": "Adjust volume",
 				"Push": "Mute / Unmute",
 				"Touch": "Mute / Unmute"
 			}

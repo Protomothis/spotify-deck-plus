@@ -261,7 +261,7 @@ export const player = {
 		withDevice(() => request("/me/player/volume", { method: "PUT", query: { volume_percent: Math.max(0, Math.min(100, Math.round(pct))) } })),
 	shuffle: (on: boolean) => withDevice(() => request("/me/player/shuffle", { method: "PUT", query: { state: on } })),
 	repeat: (mode: "off" | "context" | "track") => withDevice(() => request("/me/player/repeat", { method: "PUT", query: { state: mode } })),
-	transfer: (deviceId: string, play = true) => request("/me/player", { method: "PUT", body: { device_ids: [deviceId], play } }),
+	transfer: (deviceId: string, play = false) => request("/me/player", { method: "PUT", body: { device_ids: [deviceId], play } }),
 };
 
 // ---------- Library ----------

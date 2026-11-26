@@ -142,10 +142,12 @@ export class DeviceKey extends PlayerAction {
 			if (!devices.length) throw new Error(t("noDevice"));
 			const i = devices.findIndex((d) => d.is_active);
 			const target = devices[(i + 1) % devices.length];
+			const wasPlaying = !!store.state.playback?.is_playing;
 			store.patch((s) => {
 				if (s.playback) s.playback.device = target;
 			});
-			await player.transfer(target.id!, true);
+			// Keep the current state: a paused session stays paused on the new device.
+			await player.transfer(target.id!, wasPlaying);
 		});
 	}
 }

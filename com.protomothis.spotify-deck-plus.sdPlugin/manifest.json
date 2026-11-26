@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
 	"Name": "Spotify Deck+",
-	"Version": "0.1.0.0",
+	"Version": "0.1.1.0",
 	"Author": "Protomothis",
 	"Description": "Spotify controls for Stream Deck +: playback keys, a volume dial and a folder-style library browser.",
 	"Category": "Spotify Deck+",

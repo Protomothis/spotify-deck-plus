@@ -147,6 +147,10 @@ src/
 - Spotify's Web API doesn't expose playlist folders, so playlists are shown as a flat list.
 - Podcasts play, but browsing is focused on music.
 
+## Contributing
+
+Bug reports and ideas are welcome in [Issues](https://github.com/Protomothis/spotify-deck-plus/issues). Pull requests go to the `develop` branch. See [CONTRIBUTING.md](CONTRIBUTING.md) for the branch model and release steps.
+
 ## Disclaimer
 
 This is an independent project. It is not affiliated with, endorsed by, or sponsored by Spotify AB or Elgato (Corsair). Spotify is a trademark of Spotify AB. Stream Deck is a trademark of Corsair Memory, Inc.

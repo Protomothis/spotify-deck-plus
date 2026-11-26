@@ -9,20 +9,22 @@ export const glyph = {
 	pause: "M6.5 5h3.5v14H6.5zM14 5h3.5v14H14z",
 	prev: "M6 5.5h2.2v13H6zM19 6v12a.7.7 0 0 1-1.1.6L9.8 12.6a.7.7 0 0 1 0-1.2l8.1-6A.7.7 0 0 1 19 6z",
 	next: "M15.8 5.5H18v13h-2.2zM5 6v12a.7.7 0 0 0 1.1.6l8.1-6a.7.7 0 0 0 0-1.2l-8.1-6A.7.7 0 0 0 5 6z",
-	heart:
-		"M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z",
+	heart: "M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z",
 	heartOutline:
 		"M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4zm0-2.5c2.4-1.6 6.3-4.6 7.3-7.5.7-2.2-.6-4-2.5-4-1.5 0-2.7 1-3.6 2.6L12 10.6l-1.2-1.5C9.9 7.5 8.7 6.5 7.2 6.5c-1.9 0-3.2 1.8-2.5 4 1 2.9 4.9 5.9 7.3 7.5z",
 	shuffle:
 		"M3 6.5h3.4c1.6 0 3 .8 3.9 2.1l4.4 6.6c.5.8 1.4 1.3 2.4 1.3H18v-2.2l3.5 3.2-3.5 3.2v-2.2h-.9c-1.6 0-3-.8-3.9-2.1L8.8 9.8c-.5-.8-1.4-1.3-2.4-1.3H3zm0 11h3.4c1 0 1.9-.5 2.4-1.3l.9-1.3 1.2 1.8-.4.6c-.9 1.3-2.4 2.2-4.1 2.2H3zM17.1 6.5h.9V4.3l3.5 3.2-3.5 3.2V8.5h-.9c-1 0-1.9.5-2.4 1.3l-.9 1.3-1.2-1.8.4-.6c.9-1.3 2.4-2.2 4.1-2.2z",
-	repeat:
-		"M6 8.5h10.5V6.3L20 9.5l-3.5 3.2v-2.2H7v3H5v-4a1 1 0 0 1 1-1zm12 7H7.5v2.2L4 14.5l3.5-3.2v2.2H17v-3h2v4a1 1 0 0 1-1 1z",
+	repeat: "M6 8.5h10.5V6.3L20 9.5l-3.5 3.2v-2.2H7v3H5v-4a1 1 0 0 1 1-1zm12 7H7.5v2.2L4 14.5l3.5-3.2v2.2H17v-3h2v4a1 1 0 0 1-1 1z",
 	playlistAdd: "M3 6h12v2H3zm0 4.5h12v2H3zM3 15h8v2H3zm14-2h2v3h3v2h-3v3h-2v-3h-3v-2h3z",
 	speaker:
 		"M7 2.5h10a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 20V4A1.5 1.5 0 0 1 7 2.5zm5 2a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm0 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 2.2a2.3 2.3 0 1 1 0 4.6 2.3 2.3 0 0 1 0-4.6z",
 	volume: "M3 9.5h3.5L11 5v14l-4.5-4.5H3zm11.2-1.6a5.5 5.5 0 0 1 0 8.2l-1.4-1.4a3.5 3.5 0 0 0 0-5.4zm2.8-2.8a9.5 9.5 0 0 1 0 13.8l-1.4-1.4a7.5 7.5 0 0 0 0-11z",
 	mute: "M3 9.5h3.5L11 5v14l-4.5-4.5H3zm11.3-.3 2.2 2.2 2.2-2.2 1.4 1.4-2.2 2.2 2.2 2.2-1.4 1.4-2.2-2.2-2.2 2.2-1.4-1.4 2.2-2.2-2.2-2.2z",
 	list: "M3 6h12v2H3zm0 4.5h12v2H3zM3 15h8v2H3zm14-9h4v2h-2.5v8.5a2.5 2.5 0 1 1-1.5-2.3z",
+	lines: "M3 6h18v2H3zm0 5h18v2H3zm0 5h12v2H3z",
+	disc: "M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm0 7a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z",
+	person: "M12 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zM3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5z",
+	clock: "M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm0 2a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zM11 7h2v4.6l3.2 1.9-1 1.7L11 12.7z",
 	spotify:
 		"M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm4.3 13.7a.6.6 0 0 1-.8.2c-2.3-1.4-5.1-1.7-8.5-.9a.6.6 0 1 1-.3-1.2c3.7-.8 6.8-.5 9.4 1.1.3.2.4.5.2.8zm1.2-2.6a.7.7 0 0 1-1 .2c-2.6-1.6-6.6-2.1-9.7-1.1a.7.7 0 1 1-.4-1.4c3.5-1.1 7.9-.6 10.9 1.3.3.2.4.7.2 1zm.1-2.7C14.5 9 9.4 8.8 6.4 9.7a.9.9 0 1 1-.5-1.7c3.4-1 9-.8 12.6 1.3a.9.9 0 0 1-.9 1.6z",
 };
@@ -40,12 +42,14 @@ export type KeyImage = {
 	/** Small badge text in the top-right corner (e.g. "1" for repeat-one). */
 	badge?: string;
 	bg?: string;
+	/** Glyph scale factor (1 = normal), used for small animations. */
+	scale?: number;
 };
 
 /** Builds a 144×144 key image. */
-export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = "#141414" }: KeyImage): string {
-	const size = 72;
-	const y = label ? 26 : 36;
+export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = "#141414", scale = 1 }: KeyImage): string {
+	const size = 72 * scale;
+	const y = (label ? 26 : 36) - (size - 72) / 2;
 	const parts = [`<rect width="144" height="144" fill="${bg}"/>`];
 	if (art) {
 		parts.push(`<image href="${art}" width="144" height="144" preserveAspectRatio="xMidYMid slice"/>`);
@@ -54,7 +58,9 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 	if (g) parts.push(`<g transform="translate(${(144 - size) / 2} ${y}) scale(${size / 24})"><path fill="${color}" d="${g}"/></g>`);
 	if (badge) {
 		parts.push(`<circle cx="112" cy="34" r="15" fill="${color}"/>`);
-		parts.push(`<text x="112" y="40" font-family="-apple-system,Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`);
+		parts.push(
+			`<text x="112" y="40" font-family="-apple-system,Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`,
+		);
 	}
 	if (label) {
 		const text = label.length > 11 ? `${label.slice(0, 10)}…` : label;
@@ -68,7 +74,7 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 /** Small icon (for dial touch-strip pixmaps). */
 export function iconSvg(g: string, color = "#ffffff", size = 48): string {
 	return toDataUrl(
-		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" d="${g}"/></svg>`,
+		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" fill-rule="evenodd" d="${g}"/></svg>`,
 	);
 }
 
@@ -90,12 +96,26 @@ export function fetchArt(url: string | undefined): Promise<string | undefined> {
 	let p = artCache.get(url);
 	if (!p) {
 		p = fetch(url)
-			.then(async (r) => (r.ok ? `data:${r.headers.get("content-type") ?? "image/jpeg"};base64,${Buffer.from(await r.arrayBuffer()).toString("base64")}` : undefined))
+			.then(async (r) =>
+				r.ok ? `data:${r.headers.get("content-type") ?? "image/jpeg"};base64,${Buffer.from(await r.arrayBuffer()).toString("base64")}` : undefined,
+			)
 			.catch(() => undefined);
 		artCache.set(url, p);
-		if (artCache.size > 30) artCache.delete(artCache.keys().next().value!);
+		if (artCache.size > 120) artCache.delete(artCache.keys().next().value!);
 	}
 	return p;
+}
+
+/** Full touch-strip background (200×100) made from album art, darkened for legibility. */
+export function artBackground(art: string | undefined): string {
+	const img = art?.startsWith("data:image/svg") ? undefined : art;
+	return toDataUrl(
+		`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">` +
+			`<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0.55"/><stop offset="1" stop-color="#000" stop-opacity="0.8"/></linearGradient></defs>` +
+			`<rect width="200" height="100" fill="#000"/>` +
+			(img ? `<image href="${img}" x="0" y="-50" width="200" height="200" preserveAspectRatio="xMidYMid slice" opacity="0.6"/>` : "") +
+			`<rect width="200" height="100" fill="url(#g)"/></svg>`,
+	);
 }
 
 export const fmtTime = (ms: number) => {
@@ -110,7 +130,13 @@ function charWidth(ch: string, size: number): number {
 	const c = ch.codePointAt(0) ?? 0;
 	if (ch === " ") return size * 0.3;
 	// Hangul, CJK, kana, full-width forms render roughly square.
-	if ((c >= 0x1100 && c <= 0x11ff) || (c >= 0x2e80 && c <= 0x9fff) || (c >= 0xac00 && c <= 0xd7af) || (c >= 0xf900 && c <= 0xfaff) || (c >= 0xff00 && c <= 0xffef)) {
+	if (
+		(c >= 0x1100 && c <= 0x11ff) ||
+		(c >= 0x2e80 && c <= 0x9fff) ||
+		(c >= 0xac00 && c <= 0xd7af) ||
+		(c >= 0xf900 && c <= 0xfaff) ||
+		(c >= 0xff00 && c <= 0xffef)
+	) {
 		return size;
 	}
 	if ("ilI.,:;'|!".includes(ch)) return size * 0.3;

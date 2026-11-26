@@ -1,0 +1,47 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, and what you saw on the keys, dials or touch strip.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action
+      multiple: true
+      options:
+        - Play / Pause
+        - Previous / Next
+        - Like
+        - Shuffle / Repeat
+        - Add to Playlist
+        - Switch Device
+        - Settings key / settings page
+        - Playback dial
+        - Volume dial
+        - Library Browser dial
+        - My Playlists / Liked Songs dial
+        - Other
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Plugin version, Stream Deck app version, macOS version
+      placeholder: "0.1.0 / Stream Deck 7.1 / macOS 15.2"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant lines from `com.protomothis.spotify-deck-plus.sdPlugin/logs/`. Remove anything personal.
+      render: text

@@ -124,7 +124,7 @@ function pageLang(header: string | undefined): Lang {
 	return lang();
 }
 
-const PAGE_TEXT = {
+export const PAGE_TEXT = {
 	en: {
 		title: "Spotify Deck+ Settings",
 		sub: "Spotify controls for Stream Deck +",
@@ -133,7 +133,8 @@ const PAGE_TEXT = {
 		logout: "Log out",
 		loginTitle: "Log in to Spotify",
 		relogin: "New features need extra permissions. Please <b>log in again</b> below.",
-		step1: 'Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify Developer Dashboard</a> and click <b>Create app</b>',
+		step1:
+			'Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify Developer Dashboard</a> and click <b>Create app</b>',
 		step2: "Set the Redirect URI to exactly {redirect}",
 		step3: "Tick <b>Web API</b> and save",
 		step4: "Copy the <b>Client ID</b> from the app's Settings and paste it below",
@@ -143,8 +144,8 @@ const PAGE_TEXT = {
 		copy: "Copy",
 		copied: "Copied",
 		usageTitle: "How to use",
-		usage1: "Playback dial: rotate to seek 5 s, press to play/pause, tap for next, long-touch for previous",
-		usage2: "Library dial: rotate to browse, press to open or play, tap to go back, long-touch to jump to Now Playing",
+		usage1: "Playback dial: rotate to seek (5 s by default), press to play/pause, tap for next, long-touch for previous",
+		usage2: "Library dial: rotate to browse, press to open or play (hold to add to queue), tap to go back, long-touch to jump to Now Playing",
 		usage3: "Add to playlist key: select the key in the Stream Deck app to choose the target playlist",
 		usage4: "With no active device, the plugin opens Spotify on this computer and plays there",
 		connectedAs: "Connected as {0}",
@@ -174,8 +175,8 @@ const PAGE_TEXT = {
 		copy: "복사",
 		copied: "복사됨",
 		usageTitle: "사용법",
-		usage1: "재생 제어 다이얼: 돌리면 5초 탐색, 누르면 재생/일시정지, 탭하면 다음 곡, 길게 터치하면 이전 곡",
-		usage2: "라이브러리 탐색 다이얼: 돌려서 고르기, 누르면 열기/재생, 탭하면 뒤로, 길게 터치하면 지금 재생 중으로",
+		usage1: "재생 제어 다이얼: 돌리면 탐색(기본 5초), 누르면 재생/일시정지, 탭하면 다음 곡, 길게 터치하면 이전 곡",
+		usage2: "라이브러리 탐색 다이얼: 돌려서 고르기, 누르면 열기/재생(길게 누르면 대기열에 추가), 탭하면 뒤로, 길게 터치하면 지금 재생 중으로",
 		usage3: "재생목록에 추가 키: Stream Deck 앱에서 키를 선택해 대상 재생목록 지정",
 		usage4: "활성 기기가 없으면 이 컴퓨터의 Spotify 를 열어 거기서 재생합니다",
 		connectedAs: "{0} 계정으로 연결됨",
@@ -205,8 +206,8 @@ const PAGE_TEXT = {
 		copy: "コピー",
 		copied: "コピー済み",
 		usageTitle: "使い方",
-		usage1: "再生ダイヤル: 回すと5秒シーク、押すと再生/一時停止、タップで次の曲、長押しタッチで前の曲",
-		usage2: "ライブラリダイヤル: 回して選択、押すと開く/再生、タップで戻る、長押しタッチで再生中へ",
+		usage1: "再生ダイヤル: 回すとシーク (標準5秒)、押すと再生/一時停止、タップで次の曲、長押しタッチで前の曲",
+		usage2: "ライブラリダイヤル: 回して選択、押すと開く/再生 (長押しでキューに追加)、タップで戻る、長押しタッチで再生中へ",
 		usage3: "プレイリストに追加キー: Stream Deck アプリでキーを選び、追加先のプレイリストを指定",
 		usage4: "アクティブなデバイスがない場合、このコンピューターの Spotify を起動して再生します",
 		connectedAs: "{0} として接続中",

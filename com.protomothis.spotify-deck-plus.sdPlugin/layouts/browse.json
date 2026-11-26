@@ -6,12 +6,7 @@
 		{
 			"key": "header",
 			"type": "text",
-			"rect": [
-				8,
-				4,
-				138,
-				18
-			],
+			"rect": [8, 4, 138, 18],
 			"font": {
 				"size": 13,
 				"weight": 600
@@ -24,12 +19,7 @@
 		{
 			"key": "pos",
 			"type": "text",
-			"rect": [
-				148,
-				4,
-				46,
-				18
-			],
+			"rect": [148, 4, 46, 18],
 			"font": {
 				"size": 12,
 				"weight": 400
@@ -41,12 +31,7 @@
 		{
 			"key": "prev",
 			"type": "text",
-			"rect": [
-				8,
-				26,
-				186,
-				18
-			],
+			"rect": [8, 26, 186, 18],
 			"font": {
 				"size": 13,
 				"weight": 400
@@ -59,12 +44,7 @@
 		{
 			"key": "cur",
 			"type": "text",
-			"rect": [
-				8,
-				46,
-				186,
-				24
-			],
+			"rect": [8, 46, 186, 24],
 			"font": {
 				"size": 17,
 				"weight": 700
@@ -72,17 +52,12 @@
 			"color": "#ffffff",
 			"alignment": "left",
 			"text-overflow": "fade",
-			"value": "불러오는 중…"
+			"value": ""
 		},
 		{
 			"key": "next",
 			"type": "text",
-			"rect": [
-				8,
-				74,
-				186,
-				18
-			],
+			"rect": [8, 74, 186, 18],
 			"font": {
 				"size": 13,
 				"weight": 400

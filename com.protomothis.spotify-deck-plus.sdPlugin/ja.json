@@ -42,7 +42,7 @@
 		"Tooltip": "再生中の曲と進行状況を表示します。",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "5秒シーク",
+				"Rotate": "シーク",
 				"Push": "再生 / 一時停止",
 				"Touch": "タップ: 次の曲、長押し: 前の曲"
 			}
@@ -53,7 +53,7 @@
 		"Tooltip": "アクティブな Spotify デバイスの音量を調整します。",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "音量 ±2%",
+				"Rotate": "音量調整",
 				"Push": "ミュート / 解除",
 				"Touch": "ミュート / 解除"
 			}
@@ -65,7 +65,7 @@
 		"Encoder": {
 			"TriggerDescription": {
 				"Rotate": "スクロール",
-				"Push": "開く / 再生",
+				"Push": "開く / 再生 · 長押し: キューに追加",
 				"Touch": "タップ: 戻る、長押し: 再生中へ"
 			}
 		}

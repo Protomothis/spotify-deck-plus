@@ -42,7 +42,7 @@
 		"Tooltip": "현재 곡 정보와 진행률을 표시합니다.",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "5초씩 탐색",
+				"Rotate": "탐색",
 				"Push": "재생 / 일시정지",
 				"Touch": "탭: 다음 곡, 길게: 이전 곡"
 			}
@@ -53,7 +53,7 @@
 		"Tooltip": "Spotify 재생 기기의 볼륨을 조절합니다.",
 		"Encoder": {
 			"TriggerDescription": {
-				"Rotate": "볼륨 ±2%",
+				"Rotate": "볼륨 조절",
 				"Push": "음소거 / 해제",
 				"Touch": "음소거 / 해제"
 			}
@@ -65,7 +65,7 @@
 		"Encoder": {
 			"TriggerDescription": {
 				"Rotate": "목록 스크롤",
-				"Push": "폴더 열기 / 재생",
+				"Push": "열기 / 재생 · 길게: 대기열에 추가",
 				"Touch": "탭: 뒤로, 길게: 지금 재생 중으로"
 			}
 		}

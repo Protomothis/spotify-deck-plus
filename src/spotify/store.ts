@@ -16,17 +16,38 @@ export type PlayerState = {
 
 type Listener = (s: PlayerState) => void;
 
-const POLL_MS = 2000;
+/** Poll intervals (ms). Faster right after the user touches something, slower when idle. */
+export const POLL = {
+	active: 1000,
+	playing: 3000,
+	paused: 6000,
+	idle: 15000,
+	/** How long "active" lasts after the last interaction. */
+	activeWindow: 15000,
+};
+
+/** Picks the next poll delay for the given state. Exported for tests. */
+export function pollDelay(s: PlayerState, now: number, lastActivity: number, progress: number): number {
+	if (now - lastActivity < POLL.activeWindow) return POLL.active;
+	const p = s.playback;
+	if (!s.loggedIn || !p) return POLL.idle;
+	if (!p.is_playing) return POLL.paused;
+	// Refresh right after the current track ends so the next one shows up promptly.
+	const remaining = (p.item?.duration_ms ?? Infinity) - progress;
+	return Math.max(500, Math.min(POLL.playing, remaining + 300));
+}
 
 /**
  * Single shared poller for `/me/player`, so a deck full of actions costs one request per tick.
- * Polling only runs while at least one action is visible.
+ * Polling only runs while at least one action is visible, and adapts its interval to the state
+ * (see {@link pollDelay}).
  */
 class PlayerStore {
 	state: PlayerState = { loggedIn: false, fetchedAt: 0 };
 	private listeners = new Set<Listener>();
 	private timer?: NodeJS.Timeout;
-	private soon?: NodeJS.Timeout;
+	private nextAt = 0;
+	private lastActivity = 0;
 	private inFlight = false;
 	private likedFor?: string;
 	/** Shown instead of "no device" while the local app is being started. */
@@ -44,14 +65,11 @@ class PlayerStore {
 	subscribe(fn: Listener): () => void {
 		this.listeners.add(fn);
 		fn(this.state);
-		if (this.listeners.size === 1) {
-			void this.refresh();
-			this.timer = setInterval(() => void this.refresh(), POLL_MS);
-		}
+		if (this.listeners.size === 1) void this.refresh();
 		return () => {
 			this.listeners.delete(fn);
 			if (this.listeners.size === 0) {
-				clearInterval(this.timer);
+				clearTimeout(this.timer);
 				this.timer = undefined;
 			}
 		};
@@ -73,8 +91,26 @@ class PlayerStore {
 
 	/** Re-fetch shortly (after a command, Spotify needs a moment to reflect it). */
 	refreshSoon(delay = 500): void {
-		clearTimeout(this.soon);
-		this.soon = setTimeout(() => void this.refresh(), delay);
+		this.schedule(delay, true);
+	}
+
+	/** Marks user interaction: polls quickly for a while so the deck feels live. */
+	activity(): void {
+		this.lastActivity = Date.now();
+		this.schedule(POLL.active);
+	}
+
+	/** Schedules the next poll in `delay` ms, unless one is already due sooner (or `force`). */
+	private schedule(delay: number, force = false): void {
+		if (!this.listeners.size && !force) return;
+		const at = Date.now() + delay;
+		if (this.timer && !force && this.nextAt <= at) return;
+		clearTimeout(this.timer);
+		this.nextAt = at;
+		this.timer = setTimeout(() => {
+			this.timer = undefined;
+			void this.refresh();
+		}, delay);
 	}
 
 	async refresh(): Promise<void> {
@@ -111,6 +147,7 @@ class PlayerStore {
 		} finally {
 			this.inFlight = false;
 			this.emit();
+			if (this.listeners.size && !this.timer) this.schedule(pollDelay(this.state, Date.now(), this.lastActivity, this.progress()));
 		}
 	}
 
@@ -132,6 +169,7 @@ export const store = new PlayerStore();
  * Returns false when the command failed.
  */
 export async function command(fn: () => Promise<unknown>, onError?: (msg: string) => void): Promise<boolean> {
+	store.activity();
 	try {
 		await fn();
 		store.refreshSoon();

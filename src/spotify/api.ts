@@ -95,7 +95,15 @@ export type Track = {
 	show?: { name: string; images: Image[] };
 	images?: Image[];
 };
-export type Device = { id: string | null; name: string; type: string; is_active: boolean; volume_percent: number | null; supports_volume?: boolean; is_restricted?: boolean };
+export type Device = {
+	id: string | null;
+	name: string;
+	type: string;
+	is_active: boolean;
+	volume_percent: number | null;
+	supports_volume?: boolean;
+	is_restricted?: boolean;
+};
 export type Context = { type: string; uri: string } | null;
 export type Playback = {
 	device: Device;
@@ -117,6 +125,8 @@ export type ListEntry = {
 	/** Position inside the context (for offset playback). */
 	position: number;
 	playable: boolean;
+	/** Small cover image url, if known. */
+	image?: string;
 };
 
 type Page<T> = { items: T[]; next: string | null; total: number };
@@ -133,11 +143,10 @@ async function paginate<T>(first: string, query: Record<string, string | number>
 }
 
 export const artistLine = (t: Track | null | undefined) => t?.artists?.map((a) => a.name).join(", ") ?? t?.show?.name ?? "";
-export const artUrl = (t: Track | null | undefined, prefer = 300): string | undefined => {
-	const imgs = t?.album?.images ?? t?.images ?? t?.show?.images ?? [];
-	if (!imgs.length) return undefined;
-	return [...imgs].sort((a, b) => Math.abs((a.width ?? prefer) - prefer) - Math.abs((b.width ?? prefer) - prefer))[0].url;
-};
+/** The image closest to `prefer` px wide. */
+export const pickImage = (imgs: Image[] | null | undefined, prefer = 300): string | undefined =>
+	imgs?.length ? [...imgs].sort((a, b) => Math.abs((a.width ?? prefer) - prefer) - Math.abs((b.width ?? prefer) - prefer))[0].url : undefined;
+export const artUrl = (t: Track | null | undefined, prefer = 300): string | undefined => pickImage(t?.album?.images ?? t?.images ?? t?.show?.images, prefer);
 export const idFromUri = (uri: string) => uri.split(":").pop()!;
 
 // ---------- Player ----------
@@ -158,7 +167,11 @@ const localName = () =>
 		() => os.hostname().replace(/\.local$/, ""),
 	));
 
-const spotifyRunning = () => run("/usr/bin/pgrep", ["-x", "Spotify"]).then(() => true, () => false);
+const spotifyRunning = () =>
+	run("/usr/bin/pgrep", ["-x", "Spotify"]).then(
+		() => true,
+		() => false,
+	);
 
 async function findLocal(acceptAnyComputer: boolean): Promise<Device | undefined> {
 	const devices = (await request<{ devices: Device[] }>("/me/player/devices")).devices.filter((d) => d.id && !d.is_restricted);
@@ -261,7 +274,9 @@ export const player = {
 		withDevice(() => request("/me/player/volume", { method: "PUT", query: { volume_percent: Math.max(0, Math.min(100, Math.round(pct))) } })),
 	shuffle: (on: boolean) => withDevice(() => request("/me/player/shuffle", { method: "PUT", query: { state: on } })),
 	repeat: (mode: "off" | "context" | "track") => withDevice(() => request("/me/player/repeat", { method: "PUT", query: { state: mode } })),
-	transfer: (deviceId: string, play = true) => request("/me/player", { method: "PUT", body: { device_ids: [deviceId], play } }),
+	/** Adds a track or episode to the end of the queue. */
+	queue: (uri: string) => withDevice(() => request("/me/player/queue", { method: "POST", query: { uri } })),
+	transfer: (deviceId: string, play = false) => request("/me/player", { method: "PUT", body: { device_ids: [deviceId], play } }),
 };
 
 // ---------- Library ----------
@@ -292,7 +307,9 @@ export const library = {
 	async likedSongs(max = 500): Promise<ListEntry[]> {
 		const { items } = await paginate<{ track: Track | null }>("/me/tracks", { limit: 50 }, max);
 		return items.flatMap((it, i) =>
-			it.track ? [{ uri: it.track.uri, title: it.track.name, subtitle: artistLine(it.track), position: i, playable: !it.track.is_local }] : [],
+			it.track
+				? [{ uri: it.track.uri, title: it.track.name, subtitle: artistLine(it.track), position: i, playable: !it.track.is_local, image: artUrl(it.track, 64) }]
+				: [],
 		);
 	},
 };
@@ -323,7 +340,7 @@ export const playlists = {
 		return rows.map((r, i) => {
 			const t = r.item ?? r.track;
 			return t
-				? { uri: t.uri, title: t.name, subtitle: artistLine(t), position: i, playable: !t.is_local }
+				? { uri: t.uri, title: t.name, subtitle: artistLine(t), position: i, playable: !t.is_local, image: artUrl(t, 64) }
 				: { uri: "", title: tr("unavailableTrack"), subtitle: "", position: i, playable: false };
 		});
 	},
@@ -352,8 +369,8 @@ export const albums = {
 
 // ---------- Artists / queue / history ----------
 
-export type ArtistFull = Artist & { uri: string; genres?: string[] };
-export type AlbumSimple = { id: string; uri: string; name: string; album_type: string; release_date?: string; artists: Artist[] };
+export type ArtistFull = Artist & { uri: string; genres?: string[]; images?: Image[] };
+export type AlbumSimple = { id: string; uri: string; name: string; album_type: string; release_date?: string; artists: Artist[]; images?: Image[] };
 
 /** True when a 403 is caused by the login missing a scope (needs re-login). */
 export const isScopeError = (e: unknown) => e instanceof SpotifyError && e.status === 403 && /scope/i.test(e.message);

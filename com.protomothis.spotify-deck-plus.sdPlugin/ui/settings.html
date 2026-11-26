@@ -10,7 +10,11 @@
 			body {
 				margin: 0;
 				padding: 8px 12px 16px;
-				font: 12px/1.45 -apple-system, "Apple SD Gothic Neo", "Hiragino Sans", sans-serif;
+				font:
+					12px/1.45 -apple-system,
+					"Apple SD Gothic Neo",
+					"Hiragino Sans",
+					sans-serif;
 				color: #d8d8d8;
 				background: #2d2d2d;
 			}
@@ -83,9 +87,21 @@
 		<section id="playlist-section" hidden>
 			<h3 data-t="playlist"></h3>
 			<div class="row">
-				<select id="playlist"><option value="" data-t="loading"></option></select>
+				<select id="playlist">
+					<option value="" data-t="loading"></option>
+				</select>
 				<button class="secondary" id="reload" data-t-title="reload">↻</button>
 			</div>
+		</section>
+
+		<section id="seek-section" hidden>
+			<h3 data-t="seekStep"></h3>
+			<div class="row"><select id="seekStep" data-setting="seekStep" data-unit="sec"></select></div>
+		</section>
+
+		<section id="volume-section" hidden>
+			<h3 data-t="volumeStep"></h3>
+			<div class="row"><select id="volumeStep" data-setting="volumeStep" data-unit="pct"></select></div>
 		</section>
 
 		<h3 data-t="account"></h3>
@@ -104,6 +120,10 @@
 					account: "Spotify account",
 					checking: "Checking…",
 					open: "Open settings page",
+					seekStep: "Seek per dial tick",
+					volumeStep: "Volume per dial tick",
+					sec: "{0} s",
+					pct: "{0}%",
 					loggedIn: "Logged in as {0}",
 					loggedOut: "Not logged in. Log in on the settings page.",
 				},
@@ -115,6 +135,10 @@
 					account: "Spotify 계정",
 					checking: "확인 중…",
 					open: "설정 페이지 열기",
+					seekStep: "다이얼 한 칸당 탐색",
+					volumeStep: "다이얼 한 칸당 볼륨",
+					sec: "{0}초",
+					pct: "{0}%",
 					loggedIn: "{0} 로그인됨",
 					loggedOut: "로그인되어 있지 않습니다. 설정 페이지에서 로그인하세요.",
 				},
@@ -126,6 +150,10 @@
 					account: "Spotify アカウント",
 					checking: "確認中…",
 					open: "設定ページを開く",
+					seekStep: "ダイヤル1目盛りのシーク",
+					volumeStep: "ダイヤル1目盛りの音量",
+					sec: "{0}秒",
+					pct: "{0}%",
 					loggedIn: "{0} でログイン中",
 					loggedOut: "ログインしていません。設定ページでログインしてください。",
 				},
@@ -133,10 +161,18 @@
 			let T = TEXT.en;
 			const $ = (id) => document.getElementById(id);
 			const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-			let ws, uuid, actionUUID, settings = {};
+			let ws,
+				uuid,
+				actionUUID,
+				settings = {};
 
 			function applyText(lang) {
-				T = TEXT[String(lang ?? "en").toLowerCase().split(/[-_]/)[0]] ?? TEXT.en;
+				T =
+					TEXT[
+						String(lang ?? "en")
+							.toLowerCase()
+							.split(/[-_]/)[0]
+					] ?? TEXT.en;
 				document.documentElement.lang = lang ?? "en";
 				document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = T[el.dataset.t]));
 				document.querySelectorAll("[data-t-title]").forEach((el) => (el.title = T[el.dataset.tTitle]));
@@ -184,6 +220,17 @@
 				}
 			}
 
+			const STEPS = { seekStep: [[1, 2, 5, 10, 15, 30], 5], volumeStep: [[1, 2, 5, 10], 2] };
+			function renderSteps() {
+				document.querySelectorAll("[data-setting]").forEach((sel) => {
+					const [values, def] = STEPS[sel.dataset.setting];
+					const unit = T[sel.dataset.unit];
+					sel.innerHTML = values.map((v) => `<option value="${v}">${esc(unit.replace("{0}", v))}</option>`).join("");
+					sel.value = String(settings[sel.dataset.setting] ?? def);
+					sel.onchange = () => setSettings({ ...settings, [sel.dataset.setting]: Number(sel.value) });
+				});
+			}
+
 			$("open").onclick = () => sendToPlugin({ event: "openSettings" });
 			$("reload").onclick = () => sendToPlugin({ event: "playlists" });
 			$("playlist").onchange = (e) => {
@@ -201,6 +248,9 @@
 				actionUUID = action.action;
 				settings = action.payload?.settings ?? {};
 				$("playlist-section").hidden = actionUUID !== "com.protomothis.spotify-deck-plus.add-to-playlist";
+				$("seek-section").hidden = actionUUID !== "com.protomothis.spotify-deck-plus.playback-dial";
+				$("volume-section").hidden = actionUUID !== "com.protomothis.spotify-deck-plus.volume-dial";
+				renderSteps();
 
 				ws = new WebSocket("ws://127.0.0.1:" + port);
 				ws.onopen = () => {

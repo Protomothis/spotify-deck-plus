@@ -208,7 +208,7 @@
 			"Tooltip": "Browse Now Playing, queue, playlists, liked songs, artists, albums and history like folders, and play from them.",
 			"Controllers": ["Encoder"],
 			"Encoder": {
-				"layout": "layouts/browse.json",
+				"layout": "layouts/explorer.json",
 				"TriggerDescription": {
 					"Rotate": "Scroll",
 					"Push": "Open / Play · Hold: add to queue",

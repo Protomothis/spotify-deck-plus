@@ -1,7 +1,7 @@
 import type { JsonObject } from "@elgato/utils";
 import { action, type Action, type DialDownEvent, type DialRotateEvent, type TouchTapEvent } from "@elgato/streamdeck";
 
-import { DIM, fetchArt, fmtTime, glyph, GREEN, iconSvg } from "../render";
+import { artBackground, DIM, fetchArt, fmtTime, glyph, GREEN, iconSvg } from "../render";
 import { artistLine, artUrl, library, me, player, playlists, type ListEntry } from "../spotify/api";
 import { command, store, type PlayerState } from "../spotify/store";
 import { PlayerAction } from "./base";
@@ -22,18 +22,30 @@ export class PlaybackDial extends PlayerAction {
 		const pb = s.playback;
 		const t = pb?.item;
 		if (!t) {
-			await this.feedback(a, { art: iconSvg(glyph.spotify, DIM), title: s.error ?? tr("notPlaying"), artist: "", progress: 0, elapsed: "", remaining: "" });
+			await this.feedback(a, {
+				bg: artBackground(undefined),
+				art: iconSvg(glyph.spotify, DIM),
+				title: s.error ?? tr("notPlaying"),
+				artist: "",
+				progress: 0,
+				elapsed: "",
+				remaining: "",
+			});
 			return;
 		}
 		const dur = t.duration_ms || 1;
 		const pos = this.seekTarget ?? store.progress();
-		const art = (await fetchArt(artUrl(t, 64))) ?? iconSvg(glyph.spotify, GREEN);
+		const cover = await fetchArt(artUrl(t, 64));
+		const seeking = this.seekTarget !== undefined;
 		await this.feedback(a, {
-			art,
+			// The 64 px cover stretched across the strip doubles as a soft, blurred backdrop.
+			bg: artBackground(cover),
+			art: cover ?? iconSvg(glyph.spotify, GREEN),
 			title: { value: this.scroll(a, "title", t.name, 130, 15), color: pb!.is_playing ? "#ffffff" : DIM },
 			artist: this.scroll(a, "artist", artistLine(t), 130, 12),
-			progress: { value: Math.round((pos / dur) * 100), bar_fill_c: pb!.is_playing ? GREEN : DIM },
-			elapsed: fmtTime(pos),
+			// While seeking, preview the target position before the request is sent.
+			progress: { value: Math.round((pos / dur) * 100), bar_fill_c: seeking ? "#ffffff" : pb!.is_playing ? GREEN : DIM },
+			elapsed: seeking ? { value: `→ ${fmtTime(pos)}`, color: GREEN } : { value: fmtTime(pos), color: "#c8c8c8" },
 			remaining: `-${fmtTime(dur - pos)}`,
 		});
 	}

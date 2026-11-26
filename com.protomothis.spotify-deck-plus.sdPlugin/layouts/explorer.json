@@ -1,0 +1,76 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+	"id": "spotify-explorer",
+	"controller": "Encoder",
+	"items": [
+		{
+			"key": "header",
+			"type": "text",
+			"rect": [8, 4, 138, 18],
+			"font": {
+				"size": 13,
+				"weight": 600
+			},
+			"color": "#1ed760",
+			"alignment": "left",
+			"text-overflow": "fade",
+			"value": "Spotify"
+		},
+		{
+			"key": "pos",
+			"type": "text",
+			"rect": [148, 4, 46, 18],
+			"font": {
+				"size": 12,
+				"weight": 400
+			},
+			"color": "#9a9a9a",
+			"alignment": "right",
+			"value": ""
+		},
+		{
+			"key": "prev",
+			"type": "text",
+			"rect": [8, 26, 186, 18],
+			"font": {
+				"size": 13,
+				"weight": 400
+			},
+			"color": "#7a7a7a",
+			"alignment": "left",
+			"text-overflow": "ellipsis",
+			"value": ""
+		},
+		{
+			"key": "thumb",
+			"type": "pixmap",
+			"rect": [8, 46, 24, 24]
+		},
+		{
+			"key": "cur",
+			"type": "text",
+			"rect": [36, 46, 158, 24],
+			"font": {
+				"size": 17,
+				"weight": 700
+			},
+			"color": "#ffffff",
+			"alignment": "left",
+			"text-overflow": "fade",
+			"value": ""
+		},
+		{
+			"key": "next",
+			"type": "text",
+			"rect": [8, 74, 186, 18],
+			"font": {
+				"size": 13,
+				"weight": 400
+			},
+			"color": "#7a7a7a",
+			"alignment": "left",
+			"text-overflow": "ellipsis",
+			"value": ""
+		}
+	]
+}

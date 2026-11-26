@@ -4,9 +4,16 @@
 	"controller": "Encoder",
 	"items": [
 		{
+			"key": "bg",
+			"type": "pixmap",
+			"rect": [0, 0, 200, 100],
+			"zOrder": 0
+		},
+		{
 			"key": "art",
 			"type": "pixmap",
-			"rect": [6, 8, 52, 52]
+			"rect": [6, 8, 52, 52],
+			"zOrder": 1
 		},
 		{
 			"key": "title",
@@ -18,7 +25,8 @@
 			},
 			"alignment": "left",
 			"text-overflow": "fade",
-			"value": ""
+			"value": "",
+			"zOrder": 1
 		},
 		{
 			"key": "artist",
@@ -28,24 +36,26 @@
 				"size": 12,
 				"weight": 400
 			},
-			"color": "#a0a0a0",
+			"color": "#c8c8c8",
 			"alignment": "left",
 			"text-overflow": "fade",
-			"value": ""
+			"value": "",
+			"zOrder": 1
 		},
 		{
 			"key": "progress",
 			"type": "bar",
 			"rect": [6, 68, 188, 8],
 			"subtype": 0,
-			"bar_bg_c": "#3a3a3a",
+			"bar_bg_c": "#4a4a4a",
 			"bar_fill_c": "#1ed760",
 			"border_w": 0,
 			"range": {
 				"min": 0,
 				"max": 100
 			},
-			"value": 0
+			"value": 0,
+			"zOrder": 1
 		},
 		{
 			"key": "elapsed",
@@ -55,9 +65,10 @@
 				"size": 11,
 				"weight": 400
 			},
-			"color": "#a0a0a0",
+			"color": "#c8c8c8",
 			"alignment": "left",
-			"value": ""
+			"value": "",
+			"zOrder": 1
 		},
 		{
 			"key": "remaining",
@@ -67,9 +78,10 @@
 				"size": 11,
 				"weight": 400
 			},
-			"color": "#a0a0a0",
+			"color": "#c8c8c8",
 			"alignment": "right",
-			"value": ""
+			"value": "",
+			"zOrder": 1
 		}
 	]
 }

@@ -11,6 +11,8 @@ import { command, store, type PlayerState } from "../spotify/store";
 export abstract class PlayerAction<T extends JsonObject = JsonObject> extends SingletonAction<T> {
 	private unsub?: () => void;
 	private last = new Map<string, string>();
+	/** Last feedback sent per action, per layout key (JSON), so only changed keys are sent. */
+	private lastFeedback = new Map<string, Map<string, string>>();
 	/** Set by subclasses that render scrolling text; drives a slow re-render ticker. */
 	protected marqueeMs = 0;
 	private marqueeTimer?: NodeJS.Timeout;
@@ -20,6 +22,7 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 
 	override onWillAppear(ev: WillAppearEvent<T>): void {
 		this.last.delete(ev.action.id);
+		this.lastFeedback.delete(ev.action.id);
 		if (!this.unsub) {
 			this.unsub = store.subscribe((s) => this.renderAll(s));
 			if (this.marqueeMs) {
@@ -35,6 +38,7 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 
 	override onWillDisappear(ev: WillDisappearEvent<T>): void {
 		this.last.delete(ev.action.id);
+		this.lastFeedback.delete(ev.action.id);
 		// The disappearing action may still be enumerated during this event.
 		setTimeout(() => {
 			if (![...this.actions].length) {
@@ -98,12 +102,22 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 		await action.setImage(img);
 	}
 
-	/** setFeedback, skipped when unchanged. */
+	/**
+	 * setFeedback with only the layout keys that changed since the last call. Large values such as
+	 * album art are sent once instead of on every marquee tick.
+	 */
 	protected async feedback(action: Action<T>, payload: Record<string, unknown>): Promise<void> {
 		if (!action.isDial()) return;
-		const key = JSON.stringify(payload);
-		if (this.last.get(action.id) === key) return;
-		this.last.set(action.id, key);
-		await action.setFeedback(payload as Parameters<typeof action.setFeedback>[0]);
+		let sent = this.lastFeedback.get(action.id);
+		if (!sent) this.lastFeedback.set(action.id, (sent = new Map()));
+		const changed: Record<string, unknown> = {};
+		for (const [k, v] of Object.entries(payload)) {
+			const json = JSON.stringify(v);
+			if (sent.get(k) === json) continue;
+			sent.set(k, json);
+			changed[k] = v;
+		}
+		if (!Object.keys(changed).length) return;
+		await action.setFeedback(changed as Parameters<typeof action.setFeedback>[0]);
 	}
 }

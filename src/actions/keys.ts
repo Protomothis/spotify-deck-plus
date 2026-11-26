@@ -57,8 +57,19 @@ export class LikeKey extends PlayerAction {
 		if (!track || store.state.playback?.currently_playing_type !== "track") return void ev.action.showAlert();
 		const next = !store.state.liked;
 		store.patch((s) => (s.liked = next));
+		void this.pop(ev.action, next);
 		const ok = await this.run(ev.action, () => library.setSaved(track, next));
 		if (!ok) store.patch((s) => (s.liked = !next));
+	}
+
+	/** A quick "pop" of the heart: grows, overshoots back, settles. */
+	private async pop(a: KeyDownEvent["action"], liked: boolean): Promise<void> {
+		const g = liked ? glyph.heart : glyph.heartOutline;
+		const color = liked ? GREEN : "#ffffff";
+		for (const scale of liked ? [1.25, 1.4, 1.15, 0.95, 1] : [0.8, 0.7, 0.9, 1]) {
+			await a.setImage(keyImage({ glyph: g, color, scale }));
+			await new Promise((r) => setTimeout(r, 45));
+		}
 	}
 }
 

@@ -25,6 +25,7 @@ const en = {
 	loadFailed: "Failed to load",
 	empty: "Empty",
 	tapBack: "‹ Tap to go back",
+	addedToQueue: "✓ Added to queue",
 
 	// Auth
 	tokenFailed: "Token request failed ({0}): {1}",
@@ -97,6 +98,7 @@ const ko: Record<Key, string> = {
 	loadFailed: "불러오기 실패",
 	empty: "비어 있음",
 	tapBack: "‹ 탭하면 뒤로",
+	addedToQueue: "✓ 대기열에 추가함",
 
 	tokenFailed: "토큰 요청 실패 ({0}): {1}",
 	badClientId: "Client ID 형식이 올바르지 않습니다 (32자리 16진수)",
@@ -164,6 +166,7 @@ const ja: Record<Key, string> = {
 	loadFailed: "読み込み失敗",
 	empty: "空です",
 	tapBack: "‹ タップで戻る",
+	addedToQueue: "✓ キューに追加しました",
 
 	tokenFailed: "トークン取得に失敗 ({0}): {1}",
 	badClientId: "Client ID の形式が正しくありません (16進数32文字)",

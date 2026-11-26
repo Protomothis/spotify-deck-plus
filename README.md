@@ -41,13 +41,13 @@ Playback keys, a smooth volume dial, and a library browser you navigate like fol
 
 ### Dials (Stream Deck +)
 
-| Dial            | Rotate    | Push               | Touch                              |
-| --------------- | --------- | ------------------ | ---------------------------------- |
-| Playback        | Seek ±5 s | Play / Pause       | Tap: next · Hold: previous         |
-| Volume          | ±2 %      | Mute / Unmute      | Mute / Unmute                      |
-| Library Browser | Scroll    | Open folder / Play | Tap: back · Hold: Now Playing      |
-| My Playlists    | Scroll    | Play playlist      | Tap: current list · Hold: refresh  |
-| Liked Songs     | Scroll    | Play track         | Tap: current track · Hold: refresh |
+| Dial            | Rotate    | Push                             | Touch                              |
+| --------------- | --------- | -------------------------------- | ---------------------------------- |
+| Playback        | Seek ±5 s | Play / Pause                     | Tap: next · Hold: previous         |
+| Volume          | ±2 %      | Mute / Unmute                    | Mute / Unmute                      |
+| Library Browser | Scroll    | Open / Play · Hold: add to queue | Tap: back · Hold: Now Playing      |
+| My Playlists    | Scroll    | Play playlist                    | Tap: current list · Hold: refresh  |
+| Liked Songs     | Scroll    | Play track                       | Tap: current track · Hold: refresh |
 
 The library browser starts at the root:
 

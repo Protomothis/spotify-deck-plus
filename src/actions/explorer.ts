@@ -1,4 +1,4 @@
-import { action, type DialDownEvent, type DialRotateEvent, type TouchTapEvent } from "@elgato/streamdeck";
+import { action, type DialDownEvent, type DialRotateEvent, type DialUpEvent, type TouchTapEvent } from "@elgato/streamdeck";
 import type { JsonObject } from "@elgato/utils";
 import type { Action } from "@elgato/streamdeck";
 
@@ -34,6 +34,8 @@ type Item = {
 	/** Present on folders: loads the children shown after entering. */
 	open?: () => Promise<Frame>;
 	play?: () => Promise<unknown>;
+	/** Track / episode uri that a long press adds to the queue. */
+	queueUri?: string;
 	disabled?: boolean;
 };
 
@@ -50,6 +52,10 @@ type Frame = {
 };
 
 type Nav = { stack: Frame[]; lastTouched: number };
+
+/** Press held at least this long adds the selection to the queue instead of playing it. */
+const HOLD_MS = 500;
+const TOAST_MS = 1800;
 
 const IDLE_MS = 6000;
 const CACHE_MS = 5 * 60_000;
@@ -88,6 +94,7 @@ const contextItems = (entries: ListEntry[], contextUri: string, byUri = false): 
 		title: e.title,
 		subtitle: e.subtitle,
 		uri: e.uri,
+		queueUri: e.playable ? e.uri : undefined,
 		disabled: !e.playable,
 		play: () => player.play({ context_uri: contextUri, offset: byUri ? { uri: e.uri } : { position: e.position } }),
 	}));
@@ -100,6 +107,7 @@ const trackListItems = (tracks: Track[], idPrefix: string): Item[] => {
 		title: t.name,
 		subtitle: artistLine(t),
 		uri: t.uri,
+		queueUri: t.is_local ? undefined : t.uri,
 		disabled: !!t.is_local,
 		play: () => player.play({ uris, offset: { position: i } }),
 	}));
@@ -268,6 +276,10 @@ function rootFrame(): Frame {
 export class ExplorerDial extends PlayerAction {
 	protected override marqueeMs = 400;
 	private navs = new Map<string, Nav>();
+	/** Pending long-press timers per action (press is resolved on release or after HOLD_MS). */
+	private holds = new Map<string, NodeJS.Timeout>();
+	/** Short confirmation shown on the bottom line, per action. */
+	private toasts = new Map<string, { text: string; until: number }>();
 
 	private nav(id: string): Nav {
 		let n = this.navs.get(id);
@@ -333,6 +345,9 @@ export class ExplorerDial extends PlayerAction {
 		if (f.follow && nowIdx >= 0 && Date.now() - n.lastTouched > IDLE_MS) f.cursor = nowIdx;
 		f.cursor = Math.max(0, Math.min(f.cursor, f.items.length - 1));
 
+		const toast = this.toasts.get(a.id);
+		const next = toast && toast.until > Date.now() ? { value: toast.text, color: GREEN } : undefined;
+
 		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.subtitle ? ` · ${it.subtitle}` : ""}${it.open ? "  ›" : ""}` : "");
 		const cur = f.items[f.cursor];
 		return this.feedback(a, {
@@ -340,7 +355,7 @@ export class ExplorerDial extends PlayerAction {
 			pos: `${f.cursor + 1}/${f.items.length}`,
 			prev: label(f.items[f.cursor - 1]),
 			cur: { value: this.scroll(a, "cur", label(cur), 186, 17), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
-			next: label(f.items[f.cursor + 1]),
+			next: next ?? { value: label(f.items[f.cursor + 1]), color: "#7a7a7a" },
 		});
 	}
 
@@ -353,8 +368,48 @@ export class ExplorerDial extends PlayerAction {
 		void this.render(ev.action, store.state);
 	}
 
-	/** Press: enter a folder, or play the selected item. */
-	override async onDialDown(ev: DialDownEvent): Promise<void> {
+	/** Press starts a hold timer: held → add to queue, released early → normal press. */
+	override onDialDown(ev: DialDownEvent): void {
+		clearTimeout(this.holds.get(ev.action.id));
+		this.holds.set(
+			ev.action.id,
+			setTimeout(() => {
+				this.holds.delete(ev.action.id);
+				void this.enqueue(ev.action);
+			}, HOLD_MS),
+		);
+	}
+
+	override async onDialUp(ev: DialUpEvent): Promise<void> {
+		const timer = this.holds.get(ev.action.id);
+		if (!timer) return; // already handled as a long press
+		clearTimeout(timer);
+		this.holds.delete(ev.action.id);
+		await this.press(ev.action);
+	}
+
+	/** Long press: add the selected track to the queue. */
+	private async enqueue(a: DialDownEvent["action"]): Promise<void> {
+		const n = this.nav(a.id);
+		const f = n.stack[n.stack.length - 1];
+		const uri = f.items[f.cursor]?.queueUri;
+		if (!uri || f.loading) return void a.showAlert();
+		n.lastTouched = Date.now();
+		if (
+			await command(
+				() => player.queue(uri),
+				() => void a.showAlert(),
+			)
+		) {
+			this.toasts.set(a.id, { text: t("addedToQueue"), until: Date.now() + TOAST_MS });
+			void this.render(a, store.state);
+			setTimeout(() => this.renderId(a.id), TOAST_MS + 50);
+		}
+	}
+
+	/** Short press: enter a folder, or play the selected item. */
+	private async press(action: DialDownEvent["action"]): Promise<void> {
+		const ev = { action };
 		const n = this.nav(ev.action.id);
 		const f = n.stack[n.stack.length - 1];
 		const it = f.items[f.cursor];

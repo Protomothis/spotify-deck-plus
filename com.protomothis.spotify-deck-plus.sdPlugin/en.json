@@ -65,7 +65,7 @@
 		"Encoder": {
 			"TriggerDescription": {
 				"Rotate": "Scroll",
-				"Push": "Open / Play",
+				"Push": "Open / Play · Hold: add to queue",
 				"Touch": "Tap: back, hold: Now Playing"
 			}
 		}

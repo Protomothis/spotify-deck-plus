@@ -52,7 +52,7 @@
 			"color": "#ffffff",
 			"alignment": "left",
 			"text-overflow": "fade",
-			"value": "불러오는 중…"
+			"value": ""
 		},
 		{
 			"key": "next",

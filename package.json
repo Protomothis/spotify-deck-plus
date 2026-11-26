@@ -27,7 +27,7 @@
 		"typecheck": "tsc --noEmit",
 		"validate": "streamdeck validate com.protomothis.spotify-deck-plus.sdPlugin",
 		"link": "streamdeck link com.protomothis.spotify-deck-plus.sdPlugin",
-		"restart": "pkill -f com.protomothis.spotify-deck-plus.sdPlugin/bin/plugin.js; sleep 2; pgrep -f com.protomothis.spotify-deck-plus.sdPlugin/bin/plugin.js >/dev/null && echo restarted",
+		"restart": "pkill -f com.protomothis.spotify-deck-plus.sdPlugin/bin/plugin.js; sleep 4; pgrep -f com.protomothis.spotify-deck-plus.sdPlugin/bin/plugin.js >/dev/null && echo restarted",
 		"pack": "streamdeck pack com.protomothis.spotify-deck-plus.sdPlugin --output dist",
 		"lint": "eslint .",
 		"format": "prettier --write .",

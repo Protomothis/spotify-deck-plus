@@ -23,6 +23,7 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 	override onWillAppear(ev: WillAppearEvent<T>): void {
 		this.last.delete(ev.action.id);
 		this.lastFeedback.delete(ev.action.id);
+		this.layouts.delete(ev.action.id);
 		if (!this.unsub) {
 			this.unsub = store.subscribe((s) => this.renderAll(s));
 			if (this.marqueeMs) {
@@ -39,6 +40,7 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 	override onWillDisappear(ev: WillDisappearEvent<T>): void {
 		this.last.delete(ev.action.id);
 		this.lastFeedback.delete(ev.action.id);
+		this.layouts.delete(ev.action.id);
 		// The disappearing action may still be enumerated during this event.
 		setTimeout(() => {
 			if (![...this.actions].length) {
@@ -100,6 +102,17 @@ export abstract class PlayerAction<T extends JsonObject = JsonObject> extends Si
 		if (!action.isKey() || this.busy.has(action.id) || this.last.get(action.id) === img) return;
 		this.last.set(action.id, img);
 		await action.setImage(img);
+	}
+
+	/** Current touch-strip layout per action (when switched at runtime). */
+	private layouts = new Map<string, string>();
+
+	/** Switches the dial's layout when it differs; everything is re-sent after a switch. */
+	protected async layout(action: Action<T>, path: string): Promise<void> {
+		if (!action.isDial() || this.layouts.get(action.id) === path) return;
+		this.layouts.set(action.id, path);
+		this.lastFeedback.delete(action.id);
+		await action.setFeedbackLayout(path);
 	}
 
 	/**

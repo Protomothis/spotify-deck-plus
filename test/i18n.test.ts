@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { LANGS, pickLang, tIn } from "../src/i18n";
 import { PAGE_TEXT } from "../src/server";
+import { SEEK_STEPS, stepSetting } from "../src/settings";
 
 const PLUGIN_DIR = path.resolve(__dirname, "../com.protomothis.spotify-deck-plus.sdPlugin");
 const manifest = JSON.parse(fs.readFileSync(path.join(PLUGIN_DIR, "manifest.json"), "utf8"));
@@ -41,4 +42,13 @@ describe("i18n", () => {
 			}
 		});
 	}
+});
+
+describe("dial steps", () => {
+	it("accepts allowed values and falls back otherwise", () => {
+		expect(stepSetting(10, SEEK_STEPS, 5)).toBe(10);
+		expect(stepSetting("15", SEEK_STEPS, 5)).toBe(15);
+		expect(stepSetting(7, SEEK_STEPS, 5)).toBe(5);
+		expect(stepSetting(undefined, SEEK_STEPS, 5)).toBe(5);
+	});
 });

@@ -168,7 +168,7 @@
 			"Encoder": {
 				"layout": "layouts/playback.json",
 				"TriggerDescription": {
-					"Rotate": "Seek 5 s",
+					"Rotate": "Seek",
 					"Push": "Play / Pause",
 					"Touch": "Tap: next, hold: previous"
 				}
@@ -189,7 +189,7 @@
 			"Encoder": {
 				"layout": "layouts/volume.json",
 				"TriggerDescription": {
-					"Rotate": "Volume ±2%",
+					"Rotate": "Adjust volume",
 					"Push": "Mute / Unmute",
 					"Touch": "Mute / Unmute"
 				}

@@ -59,13 +59,13 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 	if (badge) {
 		parts.push(`<circle cx="112" cy="34" r="15" fill="${color}"/>`);
 		parts.push(
-			`<text x="112" y="40" font-family="-apple-system,Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`,
+			`<text x="112" y="40" font-family="-apple-system,'Segoe UI',Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`,
 		);
 	}
 	if (label) {
 		const text = label.length > 11 ? `${label.slice(0, 10)}…` : label;
 		parts.push(
-			`<text x="72" y="128" font-family="-apple-system,'Apple SD Gothic Neo',Helvetica,sans-serif" font-size="19" font-weight="600" text-anchor="middle" fill="#ffffff">${esc(text)}</text>`,
+			`<text x="72" y="128" font-family="-apple-system,'Segoe UI','Apple SD Gothic Neo','Malgun Gothic','Hiragino Sans','Yu Gothic UI',Helvetica,sans-serif" font-size="19" font-weight="600" text-anchor="middle" fill="#ffffff">${esc(text)}</text>`,
 		);
 	}
 	return toDataUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">${parts.join("")}</svg>`);

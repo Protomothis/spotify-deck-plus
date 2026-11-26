@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { LANGS, pickLang, tIn } from "../src/i18n";
 import { PAGE_TEXT } from "../src/server";
 import { SEEK_STEPS, stepSetting } from "../src/settings";
+import { tasklistHasSpotify } from "../src/spotify/local";
 
 const PLUGIN_DIR = path.resolve(__dirname, "../com.protomothis.spotify-deck-plus.sdPlugin");
 const manifest = JSON.parse(fs.readFileSync(path.join(PLUGIN_DIR, "manifest.json"), "utf8"));
@@ -50,5 +51,12 @@ describe("dial steps", () => {
 		expect(stepSetting("15", SEEK_STEPS, 5)).toBe(15);
 		expect(stepSetting(7, SEEK_STEPS, 5)).toBe(5);
 		expect(stepSetting(undefined, SEEK_STEPS, 5)).toBe(5);
+	});
+});
+
+describe("Windows process detection", () => {
+	it("finds Spotify in tasklist CSV output", () => {
+		expect(tasklistHasSpotify('"Spotify.exe","12345","Console","1","180,000 K"\r\n')).toBe(true);
+		expect(tasklistHasSpotify("INFO: No tasks are running which match the specified criteria.\r\n")).toBe(false);
 	});
 });

@@ -1,6 +1,6 @@
 {
 	"name": "spotify-deck-plus",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"description": "Spotify controls for the Elgato Stream Deck +: playback keys, a volume dial and a folder-style library browser.",
 	"author": "Protomothis",
 	"license": "MIT",

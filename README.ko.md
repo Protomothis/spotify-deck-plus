@@ -8,7 +8,7 @@
 Spotify 가 꺼져 있어도 그냥 재생을 누르세요.
 
 [![Latest release](https://img.shields.io/github/v/release/Protomothis/spotify-deck-plus?label=download&color=1ed760)](https://github.com/Protomothis/spotify-deck-plus/releases/latest)
-![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey)
+![macOS | Windows](https://img.shields.io/badge/macOS%2012%2B%20%7C%20Windows%2010%2B-lightgrey)
 ![Stream Deck](https://img.shields.io/badge/Stream%20Deck-7.1%2B-blue)
 [![CI](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/Protomothis/spotify-deck-plus/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -24,11 +24,11 @@ Spotify 가 꺼져 있어도 그냥 재생을 누르세요.
 |                                  |                                                                                                                                            |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | 🗂️ **다이얼로 라이브러리 탐색**  | _지금 재생 중_ 에서 상위로 나가 재생목록·좋아요·아티스트·앨범을 폴더처럼 들어가고, 고른 곡을 바로 재생해요. 길게 누르면 대기열에 추가돼요. |
-| ⚡ **그냥 재생 누르기**          | 재생 중인 기기가 없으면 이 맥의 Spotify 를 백그라운드로 열어 재생 기기로 잡고, 누른 동작을 이어서 실행해요.                                |
+| ⚡ **그냥 재생 누르기**          | 재생 중인 기기가 없으면 이 컴퓨터의 Spotify 를 열어 재생 기기로 잡고, 누른 동작을 이어서 실행해요.                                         |
 | 🎨 **터치 스트립**               | 앨범 아트 배경, 실시간 진행 바, 커버 썸네일. 긴 제목은 천천히 흘러가요.                                                                    |
 | 🎛️ **빠른 반응**                 | 볼륨과 탐색이 즉시 반응하고, 요청은 뒤에서 묶어서 보내요. 단위도 바꿀 수 있어요.                                                           |
 | 🌐 **English · 한국어 · 日本語** | Stream Deck 언어를 따라가요.                                                                                                               |
-| 🔒 **개인정보 보호**             | _내_ Spotify 앱으로 로그인하고, 토큰은 내 맥 밖으로 나가지 않아요.                                                                         |
+| 🔒 **개인정보 보호**             | _내_ Spotify 앱으로 로그인하고, 토큰은 내 컴퓨터 밖으로 나가지 않아요.                                                                     |
 
 ## 빠른 시작
 
@@ -37,7 +37,7 @@ Spotify 가 꺼져 있어도 그냥 재생을 누르세요.
 3. **설정** 키를 누르거나 <http://127.0.0.1:8888> 을 열고 안내대로 Spotify 를 연결하세요. 2분 정도 걸려요. [자세한 방법은 아래](#spotify-연결)에 있어요.
 4. 음악을 트세요. 🎶
 
-> **필요한 것:** macOS 12 이상, Stream Deck 앱 7.1 이상, **Spotify Premium**. 다이얼은 Stream Deck + 가 있어야 하고, 키는 모든 Stream Deck 에서 동작해요.
+> **필요한 것:** macOS 12 이상 또는 Windows 10 이상, Spotify 데스크톱 앱, Stream Deck 앱 7.1 이상, **Spotify Premium**. 다이얼은 Stream Deck + 가 있어야 하고, 키는 모든 Stream Deck 에서 동작해요.
 
 ## 조작법
 
@@ -109,12 +109,12 @@ Spotify 는 직접 등록한 개발자 앱을 통해서만 재생 제어를 허�
 <details>
 <summary><b>"활성 기기 없음"</b></summary>
 
-이 맥의 Spotify 를 자동으로 열고 재생 기기로 잡아요. 그래도 안 되면 Spotify 앱에서 한 번 재생하거나 **재생 기기 전환** 키를 눌러 보세요.
+이 컴퓨터의 Spotify 를 자동으로 열고 재생 기기로 잡아요. 그래도 안 되면 Spotify 앱에서 한 번 재생하거나 **재생 기기 전환** 키를 눌러 보세요.
 
 </details>
 
 <details>
-<summary><b>macOS 가 "Stream Deck 이 Spotify 를 제어하려고 합니다" 라고 물어봐요</b></summary>
+<summary><b>macOS 가 "Stream Deck 이 Spotify 를 제어하려고 합니다" 라고 물어봐요 (macOS)</b></summary>
 
 **허용** 을 누르세요. Spotify 가 Spotify Connect 목록에서 빠졌을 때 다시 깨우는 데 써요. 거부했다면 **시스템 설정 › 개인정보 보호 및 보안 › 자동화 › Stream Deck › Spotify** 에서 다시 켤 수 있어요.
 
@@ -151,7 +151,7 @@ Spotify 는 Premium 계정에서만 재생 제어를 허용해요.
 ## 업데이트와 삭제
 
 - **업데이트:** [Releases](https://github.com/Protomothis/spotify-deck-plus/releases) 에서 새 `.streamDeckPlugin` 을 받아 더블클릭하세요. 배치한 키와 설정은 그대로 유지돼요.
-- **삭제:** Stream Deck 앱(**설정 › 플러그인**)에서 플러그인을 지우세요. 로그인 정보까지 지우려면 `~/.config/spotify-deck-plus` 폴더도 삭제하세요.
+- **삭제:** Stream Deck 앱(**설정 › 플러그인**)에서 플러그인을 지우세요. 로그인 정보까지 지우려면 `~/.config/spotify-deck-plus` 폴더(Windows 는 `%USERPROFILE%\.config\spotify-deck-plus`)도 삭제하세요.
 
 ## 개인정보
 
@@ -171,7 +171,7 @@ npm run build && npm run link   # 그다음 Stream Deck 앱 재시작
 
 ## 제한 사항
 
-- macOS 전용이에요.
+- **Windows** 지원은 새로 추가됐어요. CI 에서는 검사하지만 실제 PC 에서는 아직 충분히 테스트되지 않았어요. 문제가 있으면 [이슈](https://github.com/Protomothis/spotify-deck-plus/issues)로 알려 주세요. Windows 에서는 Spotify 가 완전히 백그라운드가 아니라 최소화된 채로 열리고, Spotify Connect 에서 빠진 앱을 자동으로 깨우는 기능은 없어요.
 - Spotify Web API 가 재생목록 폴더를 제공하지 않아서, 재생목록은 폴더 없이 한 목록으로 보여요.
 
 ## 고지

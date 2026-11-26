@@ -66,6 +66,8 @@ const IDLE_MS = 6000;
 const CACHE_MS = 5 * 60_000;
 const scopeMsg = () => t("scopeMissing");
 const BLANK = iconSvg("", "#000000");
+const LAYOUT_TWO = "layouts/explorer.json";
+const LAYOUT_SOLO = "layouts/explorer-solo.json";
 
 // ---------------------------------------------------------------- data → items
 
@@ -298,8 +300,11 @@ function rootFrame(): Frame {
 export class ExplorerDial extends PlayerAction {
 	protected override marqueeMs = 400;
 	private navs = new Map<string, Nav>();
-	/** Pending long-press timers per action (press is resolved on release or after HOLD_MS). */
-	private holds = new Map<string, NodeJS.Timeout>();
+	/**
+	 * Pending presses per action: the item selected when the dial went down (so a slight turn
+	 * while pressing can't change it) and the long-press timer.
+	 */
+	private holds = new Map<string, { timer: NodeJS.Timeout; frame: Frame; item?: Item }>();
 	/** Short confirmation shown on the bottom line, per action. */
 	private toasts = new Map<string, { text: string; until: number }>();
 
@@ -335,6 +340,7 @@ export class ExplorerDial extends PlayerAction {
 
 	protected async render(a: Action<JsonObject>, s: PlayerState): Promise<void> {
 		if (!s.loggedIn) {
+			await this.layout(a, LAYOUT_TWO);
 			return this.feedback(a, {
 				header: "Spotify Deck+",
 				pos: "",
@@ -359,13 +365,13 @@ export class ExplorerDial extends PlayerAction {
 		const header = this.scroll(a, "header", crumbs.length ? crumbs.slice(-2).join(" › ") : t("library"), 138, 13);
 		if (f.loading || !f.items.length) {
 			const msg = f.loading ? t("loading") : (f.error ?? t("empty"));
+			await this.layout(a, LAYOUT_SOLO);
 			return this.feedback(a, {
 				header,
 				pos: "",
 				thumb: f.loading ? iconSvg(glyph.clock, DIM) : BLANK,
 				prev: n.stack.length > 1 ? t("tapBack") : "",
 				cur: { value: this.scroll(a, "cur", msg, 146, 16), color: f.error ? DIM : "#ffffff" },
-				sub: "",
 				next: "",
 			});
 		}
@@ -383,6 +389,8 @@ export class ExplorerDial extends PlayerAction {
 		// Neighbours show the title only; the selected row gets title + subtitle on two lines.
 		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.open ? "  ›" : ""}` : "");
 		const cur = f.items[f.cursor];
+		// Menu entries and "play all" have one line centred on the icon; tracks stack title + artist.
+		await this.layout(a, cur.subtitle ? LAYOUT_TWO : LAYOUT_SOLO);
 		const thumb = (cur.image && (await fetchArt(cur.image))) || (cur.icon ? iconSvg(cur.icon, isNow(cur) ? GREEN : "#ffffff") : BLANK);
 		return this.feedback(a, {
 			thumb,
@@ -390,12 +398,14 @@ export class ExplorerDial extends PlayerAction {
 			pos: `${f.cursor + 1}/${f.items.length}`,
 			prev: label(f.items[f.cursor - 1]),
 			cur: { value: this.scroll(a, "cur", label(cur), 146, 16), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
-			sub: this.scroll(a, "sub", cur.subtitle ?? "", 146, 11),
+			...(cur.subtitle ? { sub: this.scroll(a, "sub", cur.subtitle, 146, 11) } : {}),
 			next: next ?? { value: label(f.items[f.cursor + 1]), color: "#7a7a7a" },
 		});
 	}
 
 	override onDialRotate(ev: DialRotateEvent): void {
+		// Ignore the small accidental turns that happen while the dial is being pressed.
+		if (this.holds.has(ev.action.id)) return;
 		const n = this.nav(ev.action.id);
 		const f = n.stack[n.stack.length - 1];
 		if (!f.items.length) return;
@@ -406,29 +416,29 @@ export class ExplorerDial extends PlayerAction {
 
 	/** Press starts a hold timer: held → add to queue, released early → normal press. */
 	override onDialDown(ev: DialDownEvent): void {
-		clearTimeout(this.holds.get(ev.action.id));
-		this.holds.set(
-			ev.action.id,
-			setTimeout(() => {
-				this.holds.delete(ev.action.id);
-				void this.enqueue(ev.action);
-			}, HOLD_MS),
-		);
+		const n = this.nav(ev.action.id);
+		const frame = n.stack[n.stack.length - 1];
+		const item = frame.loading ? undefined : frame.items[frame.cursor];
+		clearTimeout(this.holds.get(ev.action.id)?.timer);
+		const timer = setTimeout(() => {
+			this.holds.delete(ev.action.id);
+			void this.enqueue(ev.action, frame, item);
+		}, HOLD_MS);
+		this.holds.set(ev.action.id, { timer, frame, item });
 	}
 
 	override async onDialUp(ev: DialUpEvent): Promise<void> {
-		const timer = this.holds.get(ev.action.id);
-		if (!timer) return; // already handled as a long press
-		clearTimeout(timer);
+		const hold = this.holds.get(ev.action.id);
+		if (!hold) return; // already handled as a long press
+		clearTimeout(hold.timer);
 		this.holds.delete(ev.action.id);
-		await this.press(ev.action);
+		await this.press(ev.action, hold.frame, hold.item);
 	}
 
-	/** Long press: add the selected track to the queue. */
-	private async enqueue(a: DialDownEvent["action"]): Promise<void> {
+	/** Long press: add the item selected at press time to the queue. */
+	private async enqueue(a: DialDownEvent["action"], f: Frame, it?: Item): Promise<void> {
 		const n = this.nav(a.id);
-		const f = n.stack[n.stack.length - 1];
-		const uri = f.items[f.cursor]?.queueUri;
+		const uri = it?.queueUri;
 		if (!uri || f.loading) return void a.showAlert();
 		n.lastTouched = Date.now();
 		if (
@@ -443,12 +453,10 @@ export class ExplorerDial extends PlayerAction {
 		}
 	}
 
-	/** Short press: enter a folder, or play the selected item. */
-	private async press(action: DialDownEvent["action"]): Promise<void> {
+	/** Short press: enter a folder, or play the item selected at press time. */
+	private async press(action: DialDownEvent["action"], f: Frame, it?: Item): Promise<void> {
 		const ev = { action };
 		const n = this.nav(ev.action.id);
-		const f = n.stack[n.stack.length - 1];
-		const it = f.items[f.cursor];
 		if (!it || it.disabled || f.loading) return void ev.action.showAlert();
 		n.lastTouched = Date.now();
 		if (it.open) {

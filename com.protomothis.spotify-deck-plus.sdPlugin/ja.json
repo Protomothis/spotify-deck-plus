@@ -65,7 +65,7 @@
 		"Encoder": {
 			"TriggerDescription": {
 				"Rotate": "スクロール",
-				"Push": "開く / 再生",
+				"Push": "開く / 再生 · 長押し: キューに追加",
 				"Touch": "タップ: 戻る、長押し: 再生中へ"
 			}
 		}

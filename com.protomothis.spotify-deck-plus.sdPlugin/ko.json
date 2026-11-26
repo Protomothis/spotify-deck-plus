@@ -65,7 +65,7 @@
 		"Encoder": {
 			"TriggerDescription": {
 				"Rotate": "목록 스크롤",
-				"Push": "폴더 열기 / 재생",
+				"Push": "열기 / 재생 · 길게: 대기열에 추가",
 				"Touch": "탭: 뒤로, 길게: 지금 재생 중으로"
 			}
 		}

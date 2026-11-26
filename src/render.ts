@@ -9,14 +9,12 @@ export const glyph = {
 	pause: "M6.5 5h3.5v14H6.5zM14 5h3.5v14H14z",
 	prev: "M6 5.5h2.2v13H6zM19 6v12a.7.7 0 0 1-1.1.6L9.8 12.6a.7.7 0 0 1 0-1.2l8.1-6A.7.7 0 0 1 19 6z",
 	next: "M15.8 5.5H18v13h-2.2zM5 6v12a.7.7 0 0 0 1.1.6l8.1-6a.7.7 0 0 0 0-1.2l-8.1-6A.7.7 0 0 0 5 6z",
-	heart:
-		"M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z",
+	heart: "M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z",
 	heartOutline:
 		"M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4zm0-2.5c2.4-1.6 6.3-4.6 7.3-7.5.7-2.2-.6-4-2.5-4-1.5 0-2.7 1-3.6 2.6L12 10.6l-1.2-1.5C9.9 7.5 8.7 6.5 7.2 6.5c-1.9 0-3.2 1.8-2.5 4 1 2.9 4.9 5.9 7.3 7.5z",
 	shuffle:
 		"M3 6.5h3.4c1.6 0 3 .8 3.9 2.1l4.4 6.6c.5.8 1.4 1.3 2.4 1.3H18v-2.2l3.5 3.2-3.5 3.2v-2.2h-.9c-1.6 0-3-.8-3.9-2.1L8.8 9.8c-.5-.8-1.4-1.3-2.4-1.3H3zm0 11h3.4c1 0 1.9-.5 2.4-1.3l.9-1.3 1.2 1.8-.4.6c-.9 1.3-2.4 2.2-4.1 2.2H3zM17.1 6.5h.9V4.3l3.5 3.2-3.5 3.2V8.5h-.9c-1 0-1.9.5-2.4 1.3l-.9 1.3-1.2-1.8.4-.6c.9-1.3 2.4-2.2 4.1-2.2z",
-	repeat:
-		"M6 8.5h10.5V6.3L20 9.5l-3.5 3.2v-2.2H7v3H5v-4a1 1 0 0 1 1-1zm12 7H7.5v2.2L4 14.5l3.5-3.2v2.2H17v-3h2v4a1 1 0 0 1-1 1z",
+	repeat: "M6 8.5h10.5V6.3L20 9.5l-3.5 3.2v-2.2H7v3H5v-4a1 1 0 0 1 1-1zm12 7H7.5v2.2L4 14.5l3.5-3.2v2.2H17v-3h2v4a1 1 0 0 1-1 1z",
 	playlistAdd: "M3 6h12v2H3zm0 4.5h12v2H3zM3 15h8v2H3zm14-2h2v3h3v2h-3v3h-2v-3h-3v-2h3z",
 	speaker:
 		"M7 2.5h10a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 20V4A1.5 1.5 0 0 1 7 2.5zm5 2a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm0 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 2.2a2.3 2.3 0 1 1 0 4.6 2.3 2.3 0 0 1 0-4.6z",
@@ -54,7 +52,9 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 	if (g) parts.push(`<g transform="translate(${(144 - size) / 2} ${y}) scale(${size / 24})"><path fill="${color}" d="${g}"/></g>`);
 	if (badge) {
 		parts.push(`<circle cx="112" cy="34" r="15" fill="${color}"/>`);
-		parts.push(`<text x="112" y="40" font-family="-apple-system,Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`);
+		parts.push(
+			`<text x="112" y="40" font-family="-apple-system,Helvetica,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#141414">${esc(badge)}</text>`,
+		);
 	}
 	if (label) {
 		const text = label.length > 11 ? `${label.slice(0, 10)}…` : label;
@@ -67,9 +67,7 @@ export function keyImage({ glyph: g, color = "#ffffff", art, label, badge, bg = 
 
 /** Small icon (for dial touch-strip pixmaps). */
 export function iconSvg(g: string, color = "#ffffff", size = 48): string {
-	return toDataUrl(
-		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" d="${g}"/></svg>`,
-	);
+	return toDataUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="${color}" d="${g}"/></svg>`);
 }
 
 /** Loading spinner key image; `frame` advances the arc by 30°. */
@@ -90,7 +88,9 @@ export function fetchArt(url: string | undefined): Promise<string | undefined> {
 	let p = artCache.get(url);
 	if (!p) {
 		p = fetch(url)
-			.then(async (r) => (r.ok ? `data:${r.headers.get("content-type") ?? "image/jpeg"};base64,${Buffer.from(await r.arrayBuffer()).toString("base64")}` : undefined))
+			.then(async (r) =>
+				r.ok ? `data:${r.headers.get("content-type") ?? "image/jpeg"};base64,${Buffer.from(await r.arrayBuffer()).toString("base64")}` : undefined,
+			)
 			.catch(() => undefined);
 		artCache.set(url, p);
 		if (artCache.size > 30) artCache.delete(artCache.keys().next().value!);
@@ -110,7 +110,13 @@ function charWidth(ch: string, size: number): number {
 	const c = ch.codePointAt(0) ?? 0;
 	if (ch === " ") return size * 0.3;
 	// Hangul, CJK, kana, full-width forms render roughly square.
-	if ((c >= 0x1100 && c <= 0x11ff) || (c >= 0x2e80 && c <= 0x9fff) || (c >= 0xac00 && c <= 0xd7af) || (c >= 0xf900 && c <= 0xfaff) || (c >= 0xff00 && c <= 0xffef)) {
+	if (
+		(c >= 0x1100 && c <= 0x11ff) ||
+		(c >= 0x2e80 && c <= 0x9fff) ||
+		(c >= 0xac00 && c <= 0xd7af) ||
+		(c >= 0xf900 && c <= 0xfaff) ||
+		(c >= 0xff00 && c <= 0xffef)
+	) {
 		return size;
 	}
 	if ("ilI.,:;'|!".includes(ch)) return size * 0.3;

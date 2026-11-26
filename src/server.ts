@@ -124,7 +124,7 @@ function pageLang(header: string | undefined): Lang {
 	return lang();
 }
 
-const PAGE_TEXT = {
+export const PAGE_TEXT = {
 	en: {
 		title: "Spotify Deck+ Settings",
 		sub: "Spotify controls for Stream Deck +",
@@ -133,7 +133,8 @@ const PAGE_TEXT = {
 		logout: "Log out",
 		loginTitle: "Log in to Spotify",
 		relogin: "New features need extra permissions. Please <b>log in again</b> below.",
-		step1: 'Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify Developer Dashboard</a> and click <b>Create app</b>',
+		step1:
+			'Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify Developer Dashboard</a> and click <b>Create app</b>',
 		step2: "Set the Redirect URI to exactly {redirect}",
 		step3: "Tick <b>Web API</b> and save",
 		step4: "Copy the <b>Client ID</b> from the app's Settings and paste it below",

@@ -6,22 +6,22 @@
 		{
 			"key": "header",
 			"type": "text",
-			"rect": [8, 4, 138, 18],
+			"rect": [8, 3, 138, 17],
 			"font": {
-				"size": 13,
+				"size": 12,
 				"weight": 600
 			},
 			"color": "#1ed760",
 			"alignment": "left",
 			"text-overflow": "fade",
-			"value": "Spotify"
+			"value": ""
 		},
 		{
 			"key": "pos",
 			"type": "text",
-			"rect": [148, 4, 46, 18],
+			"rect": [148, 3, 46, 17],
 			"font": {
-				"size": 12,
+				"size": 11,
 				"weight": 400
 			},
 			"color": "#9a9a9a",
@@ -31,9 +31,9 @@
 		{
 			"key": "prev",
 			"type": "text",
-			"rect": [8, 26, 186, 18],
+			"rect": [8, 21, 186, 15],
 			"font": {
-				"size": 13,
+				"size": 11,
 				"weight": 400
 			},
 			"color": "#7a7a7a",
@@ -44,14 +44,14 @@
 		{
 			"key": "thumb",
 			"type": "pixmap",
-			"rect": [8, 46, 24, 24]
+			"rect": [8, 40, 34, 34]
 		},
 		{
 			"key": "cur",
 			"type": "text",
-			"rect": [36, 46, 158, 24],
+			"rect": [48, 38, 146, 20],
 			"font": {
-				"size": 17,
+				"size": 16,
 				"weight": 700
 			},
 			"color": "#ffffff",
@@ -60,11 +60,24 @@
 			"value": ""
 		},
 		{
+			"key": "sub",
+			"type": "text",
+			"rect": [48, 58, 146, 16],
+			"font": {
+				"size": 11,
+				"weight": 400
+			},
+			"color": "#a8a8a8",
+			"alignment": "left",
+			"text-overflow": "fade",
+			"value": ""
+		},
+		{
 			"key": "next",
 			"type": "text",
-			"rect": [8, 74, 186, 18],
+			"rect": [8, 79, 186, 15],
 			"font": {
-				"size": 13,
+				"size": 11,
 				"weight": 400
 			},
 			"color": "#7a7a7a",

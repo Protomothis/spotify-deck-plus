@@ -341,7 +341,8 @@ export class ExplorerDial extends PlayerAction {
 				thumb: BLANK,
 				prev: "",
 				cur: { value: t("notLoggedIn"), color: "#ffffff" },
-				next: t("loginHint"),
+				sub: t("loginHint"),
+				next: "",
 			});
 		}
 		const n = this.nav(a.id);
@@ -363,7 +364,8 @@ export class ExplorerDial extends PlayerAction {
 				pos: "",
 				thumb: f.loading ? iconSvg(glyph.clock, DIM) : BLANK,
 				prev: n.stack.length > 1 ? t("tapBack") : "",
-				cur: { value: this.scroll(a, "cur", msg, 158, 17), color: f.error ? DIM : "#ffffff" },
+				cur: { value: this.scroll(a, "cur", msg, 146, 16), color: f.error ? DIM : "#ffffff" },
+				sub: "",
 				next: "",
 			});
 		}
@@ -378,7 +380,8 @@ export class ExplorerDial extends PlayerAction {
 		const toast = this.toasts.get(a.id);
 		const next = toast && toast.until > Date.now() ? { value: toast.text, color: GREEN } : undefined;
 
-		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.subtitle ? ` · ${it.subtitle}` : ""}${it.open ? "  ›" : ""}` : "");
+		// Neighbours show the title only; the selected row gets title + subtitle on two lines.
+		const label = (it?: Item) => (it ? `${isNow(it) ? "▶ " : ""}${it.title}${it.open ? "  ›" : ""}` : "");
 		const cur = f.items[f.cursor];
 		const thumb = (cur.image && (await fetchArt(cur.image))) || (cur.icon ? iconSvg(cur.icon, isNow(cur) ? GREEN : "#ffffff") : BLANK);
 		return this.feedback(a, {
@@ -386,7 +389,8 @@ export class ExplorerDial extends PlayerAction {
 			header,
 			pos: `${f.cursor + 1}/${f.items.length}`,
 			prev: label(f.items[f.cursor - 1]),
-			cur: { value: this.scroll(a, "cur", label(cur), 158, 17), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
+			cur: { value: this.scroll(a, "cur", label(cur), 146, 16), color: isNow(cur) ? GREEN : cur.disabled ? DIM : "#ffffff" },
+			sub: this.scroll(a, "sub", cur.subtitle ?? "", 146, 11),
 			next: next ?? { value: label(f.items[f.cursor + 1]), color: "#7a7a7a" },
 		});
 	}
